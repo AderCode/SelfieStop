@@ -6,9 +6,9 @@
   "scripts": {
     "build:client": "webpack",
     "build:server": "babel ./server/src -d ./server/lib",
-    "dev": "source ENV_VAR && concurrently -k \"npm run watch:client\" \"npm run watch:server\" \"nodemon --watch server/lib --delay 1\"",
+    "dev": "source ENV_VAR && concurrently -k \"npm run watch:server\" \"nodemon --watch server/lib --delay 1\"",
     "prepare": "npm run build:server",
-    "start": "npm run build:client && npm run build:server && npm run start:server",
+    "start": "npm run build:server && npm run start:server",
     "start:server": "node server/lib/index.js",
     "watch:client": "webpack --watch",
     "watch:server": "babel ./server/src -w -d ./server/lib"
@@ -16,6 +16,7 @@
   "author": "Covalence",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.204.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
@@ -23,9 +24,11 @@
     "babel-preset-react": "^6.24.1",
     "express": "^4.16.2",
     "isomorphic-fetch": "^2.2.1",
+    "mailgun-js": "^0.16.0",
     "morgan": "^1.9.0",
     "mysql": "^2.15.0",
     "passport": "^0.4.0",
+    "passport-facebook-token": "^3.3.0",
     "passport-http-bearer": "^1.0.1",
     "passport-local": "^1.0.0",
     "react": "^16.2.0",

@@ -2,10 +2,10 @@ import mysql from 'mysql';
 
 let pool = mysql.createPool({
     connectionLimit: 10,
-    host: 'localhost',
-    user: 'exampleUser',
-    password: 'password',
-    database: 'InClassExample'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
 });
 
 function executeQuery(sql, args = []) {
@@ -51,6 +51,21 @@ function empty(procedureName, args = []) {
     });
 }
 
+// function generatePlaceholders(args = []) {
+//     let placeholders = '';
+//     if (args.length > 0) {
+//         for (let i = 0; i < args.length; i++) {
+//             console.log(args[i]);
+//             if (i === args.length - 1) { // if we are on the last argument in the array
+//                 placeholders += `'${args[i]}'`;
+//             } else {
+//                 placeholders += `'${args[i]}',`;
+//             }
+//         }
+//     }
+//     return placeholders;
+// }
+
 function generatePlaceholders(args = []) {
     let placeholders = '';
     if (args.length > 0) {
@@ -69,8 +84,11 @@ function getConnection() {
     return new Promise((resolve, reject) => {
         pool.getConnection((err, connection) => {
             if (err) {
+                console.log('db.js getConnection reject')
                 reject(err);
             } else {
+                console.log('db.js getConnection resolve')
+                // console.log(connection);
                 resolve(connection);
             }
         });

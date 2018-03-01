@@ -1,12 +1,23 @@
-import { Router } from 'express';
+import {Router} from 'express'
 import Table from '../table';
 
 let router = Router();
-let classTable = new Table('Classes');
+let classTable = new Table('blogs');
 
 router.get('/', (req, res) => {
-    console.log(req.user);
+    console.log('get all blogs');
     classTable.getAll()
+    .then((results) => {
+        res.json(results);
+    }).catch((err) => {
+        console.log(err);
+        res.sendStatus(500);
+    });
+});
+
+router.get('/:id?', (req, res) => {
+    console.log('get 1 blog')
+    classTable.getOne(req.params.id)
     .then((results) => {
         res.json(results);
     }).catch((err) => {
@@ -17,16 +28,6 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     classTable.insert(req.body)
-    .then((results) => {
-        res.json(results);
-    }).catch((err) => {
-        console.log(err);
-        res.sendStatus(500);
-    });
-});
-
-router.get('/:id', (req, res) => {
-    classTable.getOne(req.params.id)
     .then((results) => {
         res.json(results);
     }).catch((err) => {
@@ -54,5 +55,7 @@ router.delete('/:id', (req, res) => {
         res.sendStatus(500);
     });
 });
+
+
 
 export default router;

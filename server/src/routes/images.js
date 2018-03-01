@@ -2,11 +2,11 @@ import {Router} from 'express'
 import Table from '../table';
 
 let router = Router();
-let classTable = new Table('users');
+let imagesTable = new Table('images');
 
 router.get('/', (req, res) => {
-    console.log('get all users');
-    classTable.getAll()
+    console.log('get all images');
+    imagesTable.getAll()
     .then((results) => {
         res.json(results);
     }).catch((err) => {
@@ -16,8 +16,8 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id?', (req, res) => {
-    console.log('get 1 user')
-    classTable.getOne(req.params.id)
+    console.log('get 1 image')
+    imagesTable.getOne(req.params.id)
     .then((results) => {
         res.json(results);
     }).catch((err) => {
@@ -27,7 +27,8 @@ router.get('/:id?', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    classTable.insert(req.body)
+    console.log('image.js router post')
+    imagesTable.insert(req.body)
     .then((results) => {
         res.json(results);
     }).catch((err) => {
@@ -37,7 +38,8 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-    classTable.update(req.params.id, req.body)
+    console.log('update 1 image')
+    imagesTable.update(req.params.id, req.body)
     .then((results) => {
         res.json(results);
     }).catch((err) => {
@@ -47,7 +49,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-    classTable.delete(req.params.id)
+    imagesTable.delete(req.params.id)
     .then((results) => {
         res.json(results);
     }).catch((err) => {
