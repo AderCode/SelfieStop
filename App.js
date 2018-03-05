@@ -4,10 +4,11 @@ import HomeScreen from './screens/HomeScreen'
 import UploadScreen from './screens/UploadScreen'
 
 const RootNavigator = StackNavigator({
-  Home: { screen: HomeScreen }
-  },{
-  headerMode: 'none'
-  }
+  Home: { screen: HomeScreen },
+  Upload: { screen: UploadScreen }
+  },
+  { headerMode: 'none' },
+  {initialRoute: 'Home'}
   );
 
 export default class App extends Component {
