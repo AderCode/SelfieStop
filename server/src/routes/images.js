@@ -51,7 +51,7 @@ router.post('/', (req, res) => {
     var params = {
         Bucket: 'selfietester',
         Key: `${imgId}`,
-        Body: `${req.body.image}`,
+        body: `${req.body}`,
         ContentEncoding: 'base64',
         ContentType: `image/${imageExtension}`,
         ACL: 'public-read'
@@ -60,7 +60,7 @@ router.post('/', (req, res) => {
         if (err) {
             console.log("Error uploading data: ", err);
         } else {
-            console.log("Successfully uploaded data   ", req.key);
+            console.log("Successfully uploaded data   ", req.body);
         }
     });                                                            /////////////////////////
                                                                   //////    !!!      //////        
