@@ -27,6 +27,9 @@ export default class SubmissionScreen extends Component {
         this.state = {
             photos: [],
             log: 'logs appear here', // For on screen console
+            imgUri: '',
+            name: '',
+            description: ''
 
         }
 
@@ -67,6 +70,15 @@ export default class SubmissionScreen extends Component {
         }
     }
 
+    handleSubmit() {
+        let data = {
+            uri: this.state.imgUri,
+            name: this.state.name,
+            description: this.state.description
+        };
+        this.fetchImages(JSON.stringify(data))
+    }
+
     imagePicker() {
         ImagePicker.showImagePicker(options, (response) => {
             this.consoleLog('Response = ', response);
@@ -90,8 +102,9 @@ export default class SubmissionScreen extends Component {
                 } else {
                     const source = { uri: response.uri, isStatic: true };
                 }
-                this.fetchImages(JSON.stringify(source))
-                this.consoleLog(JSON.stringify(source));
+                // this.fetchImages(JSON.stringify(source))
+                this.consoleLog(source.uri);
+                this.setState({imgUri: `${source.uri}`})
             }
         });
     }
@@ -99,44 +112,36 @@ export default class SubmissionScreen extends Component {
     render() {
         return (
             <ScrollView style={styles.container}>
-                <Text style={styles.header} onPress={() => this.consoleLog('testing')} >Submit a new Selfie Stop</Text>
+                <Text style={styles.header} style={{alignSelf: 'center'}} >Submit a new Stop</Text>
                 <View style={styles.root}>
-                    {/* <View>
-                        <Button title="Load Images" onPress={() => this._handleButtonPress()} />
-                        <ScrollView>
-                            {this.state.photos.map((p, i) => {
-                                return (
-                                    <Image
-                                        key={i}
-                                        style={{
-                                            width: 300,
-                                            height: 100,
-                                        }}
-                                        source={{ uri: p.node.image.uri }}
-                                    />
-                                );
-                            })}
-                        </ScrollView>
-                    </View> */}
-
-
-
-                    <View></View>
-                    <TextInput placeholder="Name" style={styles.input} />
-                    <TextInput placeholder="Description" style={styles.input} />
-                    <View style={styles.btns}>
-                        <View style={styles.btn}>
-                            <Text>
-                                Use GPS
-                        </Text>
-                        </View>
-
-                        <View style={styles.btn}>
+                    <Image source={{uri: this.state.imgUri }} style={{height: 200, width: 200}} />
+                    <View style={styles.btn}>
                             <Text
                             onPress={() => this.imagePicker()}>
-                                Submit
+                                Upload
                         </Text>
                         </View>
+                    <TextInput 
+                    placeholder="Name" 
+                    style={styles.input} 
+                    ref= {(el) => { this.name = el; }}
+                    onChangeText={(name) => this.setState({name})}
+                    value={this.state.name}
+                    />
+                    <TextInput 
+                    placeholder="Description" 
+                    style={styles.input} 
+                    ref= {(el) => { this.description = el; }}
+                    onChangeText={(description) => this.setState({description})}
+                    value={this.state.description}
+                    />
+                    
+                        <View style={styles.btn}>
+                            <Text
+                            onPress={() => this.handleSubmit()}>
+                                Submit
+                        </Text>
+                        
 
                     </View>
                 </View>
