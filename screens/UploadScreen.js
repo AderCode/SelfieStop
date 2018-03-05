@@ -50,8 +50,25 @@ export default class SubmissionScreen extends Component {
         this.setState({ log: `${log}` })
     }
 
-    async imagePicker() {
-        await ImagePicker.showImagePicker(options, (response) => {
+    async fetchImages(data) {
+        try {
+            let apiUrl = 'https://powerful-savannah-66747.herokuapp.com/api/images'
+            let ipUrl = 'https://zdkwwnlgii.localtunnel.me//api/images'
+            let results = await fetch({ url: ipUrl }, {
+                body: data, // must match 'Content-Type' header
+                headers: {
+                  'content-type': 'application/json'
+                },
+                method: 'POST',
+              });
+            // this.setState({ log: `results = ${JSON.stringify(results)}` })
+        } catch (e) {
+            this.consoleLog("HomeScreen Stops Fetch Error = ", e)
+        }
+    }
+
+    imagePicker() {
+        ImagePicker.showImagePicker(options, (response) => {
             this.consoleLog('Response = ', response);
 
             if (response.didCancel) {
@@ -73,7 +90,7 @@ export default class SubmissionScreen extends Component {
                 } else {
                     const source = { uri: response.uri, isStatic: true };
                 }
-
+                this.fetchImages(JSON.stringify(source))
                 this.consoleLog(JSON.stringify(source));
             }
         });
