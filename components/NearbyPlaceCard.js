@@ -12,7 +12,7 @@ export default class NearbyPlaceCard extends Component {
                 featuredTitle={this.props.place.name}
                 featuredTitleStyle={{textShadowColor: "black", textShadowOffset: {width: 2, height: 2}, textShadowRadius: 1}}
                 image={require('../images/img.jpg')}
-                wrapperStyle={{padding: 0, flex: 1 }}  
+                wrapperStyle={{padding: 0, flex: 1, borderColor: 'black', borderWidth: 2 }}  
                 />
         )
     }

@@ -44,8 +44,9 @@ class Map extends Component {
                         key={index}
                         latitude={Number(marker.lat)}
                         longitude={Number(marker.lng)}
-                        title={marker.name}
+                        title={marker.stopname}
                         description={marker.description}
+                        steve={marker.image}
                     />
                 ))}
 

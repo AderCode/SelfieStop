@@ -12,7 +12,9 @@
     "react-native": "0.53.3",
     "react-native-elements": "^0.19.0",
     "react-native-image-picker": "^0.26.7",
+    "react-native-linear-gradient": "^2.4.0",
     "react-native-maps": "^0.20.1",
+    "react-native-radial-gradient": "^1.0.3",
     "react-native-ui-kitten": "^3.0.0",
     "react-native-vector-icons": "^4.5.0",
     "react-navigation": "^1.2.1"

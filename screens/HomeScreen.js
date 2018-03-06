@@ -1,12 +1,30 @@
 import React, { Component } from "react";
-import { ScrollView , WebView, View, StyleSheet, Text, PermissionsAndroid, TouchableNativeFeedback, Alert } from "react-native";
-import Map from '../components/Map'
-
-import NearbyPlaceCard from '../components/NearbyPlaceCard'
+import {
+    ScrollView,
+    View,
+    StyleSheet,
+    Text,
+    PermissionsAndroid,
+    TouchableNativeFeedback,
+    Alert,
+    StatusBar
+} from "react-native";
 import { Icon } from "react-native-elements";
+import ImagePicker from 'react-native-image-picker'
+import LinearGradient from 'react-native-linear-gradient'
+
+import Map from '../components/Map'
+import NearbyPlaceCard from '../components/NearbyPlaceCard'
+import NavBar from '../components/NavBar'
 
 
-
+let options = {
+    title: 'Upload a Selfie',
+    storageOptions: {
+        skipBackup: true,
+        path: 'images'
+    }
+};
 
 export default class HomeScreen extends Component {
     constructor(props) {
@@ -56,7 +74,6 @@ export default class HomeScreen extends Component {
                 userLat: res.coords.latitude,
                 userLng: res.coords.longitude
             })
-            console.log("current latLng = ", res.coords.latitude, res.coords.longitude)
         },
             err => {
                 console.log("geo err = ", err);
@@ -75,15 +92,44 @@ export default class HomeScreen extends Component {
         }
     }
 
-    navigate() {
-        this.props.navigation.navigate('Upload')
+    cam() {
+        ImagePicker.launchCamera(options, (response) => { });
+    }
+
+    navigate(screen) {
+        this.props.navigation.navigate(`${screen}`)
     }
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
-
-
+            <View style={{ flex: 1, backgroundColor: 'grey' }}>
+               
+                    <View style={{
+                        backgroundColor: '#0084FF',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        borderColor: 'black',
+                        borderBottomWidth: 2.5,
+                        padding: 2,
+                    }}>
+                        <Text onPress={
+                            () => Alert.alert('You tapped the button!')} 
+                            style={{ alignSelf: 'center', 
+                            fontSize: 40, 
+                            color: 'white', 
+                            }}>
+                            Nearby Stops
+                        </Text>
+                        {/* <TouchableNativeFeedback
+                        onPress={() => { return }}>
+                            <Icon
+                            name="list"
+                            type="foundation"
+                            size={50}
+                        />
+                        </TouchableNativeFeedback> */}
+                    </View>
                 <View style={styles.map}>
                     <Map region={{
                         latitude: this.state.userLat,
@@ -95,14 +141,11 @@ export default class HomeScreen extends Component {
                         places={this.state.places}
                     />
                 </View>
-                <ScrollView
-                style={styles.container} 
-                 > 
-                    <View> 
-                        <Text onPress={
-                            () => Alert.alert('You tapped the button!')} style={{ textAlign: 'center', marginTop: 10, fontSize: 30 }} >
-                            Nearby Stops
-                        </Text>
+                {/* <ScrollView
+                    style={styles.container}
+                >
+                    <View style={{ backgroundColor: 'transparent' }}>
+
                         {this.state.places.map((place, index) => {
                             return <NearbyPlaceCard key={index} place={place}
 
@@ -119,45 +162,59 @@ export default class HomeScreen extends Component {
                             />
                         })}
                     </View>
-                </ScrollView>
-                <View style={styles.root}>
-                    <View
-                        style={styles.upload}
-                    >
+                </ScrollView> */}
+                
+                    <View style={{
+                        backgroundColor: '#0084FF',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        borderColor: 'black',
+                        borderTopWidth: 2.5,
+                        padding: 2,
+                    }}>
+                        <TouchableNativeFeedback
+                        onPress={() => this.navigate('Upload')}>
+                        <Icon
+                            name="add-location"
+                            type="materialicons"
+                            size={50}
+                            underlayColor={'rgb(3, 0, 255)'}
+                        />
+                        </TouchableNativeFeedback>
+
+                        <TouchableNativeFeedback
+                        onPress={() => this.cam()}>
                         <Icon
                             name="camera"
                             type="entypo"
-                            onPress={() => this.navigate()}
+                            size={50}
+                            underlayColor={'rgb(3, 0, 255)'}
                         />
+                        </TouchableNativeFeedback>
+
+                        <TouchableNativeFeedback
+                        onPress={() => this.getUserLocation()}>
+                            <Icon
+                            name="my-location"
+                            type="materialicons"
+                            size={50}
+                        />
+                        </TouchableNativeFeedback>
                     </View>
-                </View>
-            </View>
+     </View>
         );
     }
 }
 const styles = StyleSheet.create({
-    container: { backgroundColor: "white"},
-    root: { alignItems: 'center', flexDirection: 'column' },
+    container: { backgroundColor: "transparent" },
     map: {
-        backgroundColor: "rgb(230, 230, 230)",
-        height: '40%',
-        width: '100%',
-        borderWidth: 1,
-        borderColor: "#000000",
-        margin: 0,
-        padding: 0
-    },
-    nearbyCard: { width: '75%' },
-    upload: {
-        flexDirection: 'row',
-        backgroundColor: "lightblue",
-        height: 50,
-        width: 50,
+        backgroundColor: "transparent",
+        height: '80.5%',
+        width: '98%',
+        borderWidth: 2,
+        borderColor: "black",
         margin: 5,
-        borderRadius: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderColor: 'black',
-        borderWidth: 1
-    }
+        alignSelf: 'center'
+    },
 });
