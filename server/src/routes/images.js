@@ -3,7 +3,6 @@ import Table from '../table';
 import AWS from 'aws-sdk';
 import fs from 'fs';
 import { executeQuery } from '../config/db';
-// import b64toBlob from 'b64-to-blob';
 import atob from 'atob';
 
 let router = Router();
@@ -69,15 +68,14 @@ router.get('/:id?', (req, res) => {
 // });
 
 
+
+
+//POST BASE64 IMAGE TO DB
 router.post('/', (req, res) => {
-    let data = (`"image": ${req.body.uri}`);
-    imagesTable.insert(req.body)
-    .then((results) => {
-        res.json(results);
-    }).catch((err) => {
-        console.log(err);
-        res.sendStatus(500);
-    });
+    var dataHolder = (`"${req.body.uri.split(',')[1]}"`);
+    console.log(dataHolder);
+    let sql = `INSERT INTO images (image) VALUES (${dataHolder})`;
+    executeQuery(sql, req)
 });
 
 
@@ -119,10 +117,10 @@ router.post('/', (req, res) => {
 //         }
 //     });
 
-//     // var b64 = "data:image/jpeg;base64,/9j/4AAQSkZJRgABA......";
-//     // var bin = atob(b64.split(',')[1]);
-//     // var exif = EXIF.readFromBinaryFile(new BinaryFile(bin));
-//     // alert(exif.Orientation);
+    // var b64 = "data:image/jpeg;base64,/9j/4AAQSkZJRgABA......";
+    // var bin = atob(b64.split(',')[1]);
+    // var exif = EXIF.readFromBinaryFile(new BinaryFile(bin));
+    // alert(exif.Orientation);
 
 //     /////////////////////////
 //     //////    !!!      //////        
