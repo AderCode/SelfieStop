@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, Linking } from 'react-native'
 import { Marker, Callout } from 'react-native-maps'
 
 import User from '../images/user.gif'
@@ -12,7 +12,9 @@ class MapMarker extends Component {
         let $callout;
         if (this.props.steve) {
           
-                $callout = <Callout>
+                $callout = <Callout
+                onPress={()=> Linking.openURL(`http://maps.google.com/maps?daddr=${this.props.latitude},${this.props.longitude}`)}
+                >
                     <View style={{ height: 120, width: 200 }}>
                         <Image source={{ uri: `data:image/jpeg;base64,${this.props.steve}` }} style={{ height: 100, width: 200 }} />
                         <Text style={{ textAlign: 'center' }}>

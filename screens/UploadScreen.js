@@ -263,7 +263,7 @@ export default class SubmissionScreen extends Component {
                             borderTopWidth: 2.5,
                             padding: 2,
                         }}>
-                            <TouchableNativeFeedback
+                            {/* <TouchableNativeFeedback
                                 onPress={() => this.navigate('Home')}
                             >
                                 <Icon
@@ -271,7 +271,7 @@ export default class SubmissionScreen extends Component {
                                     type="entypo"
                                     size={50}
                                 />
-                            </TouchableNativeFeedback>
+                            </TouchableNativeFeedback> */}
 
 
                             <TouchableNativeFeedback

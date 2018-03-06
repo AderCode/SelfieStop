@@ -193,14 +193,14 @@ export default class HomeScreen extends Component {
                         />
                         </TouchableNativeFeedback>
 
-                        <TouchableNativeFeedback
+                        {/* <TouchableNativeFeedback
                         onPress={() => this.getUserLocation()}>
                             <Icon
                             name="my-location"
                             type="materialicons"
                             size={50}
                         />
-                        </TouchableNativeFeedback>
+                        </TouchableNativeFeedback> */}
                     </View>
      </View>
         );
