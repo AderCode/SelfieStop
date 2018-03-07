@@ -3,7 +3,9 @@ import Table from '../table';
 import AWS from 'aws-sdk';
 import fs from 'fs';
 import { executeQuery } from '../config/db';
-import atob from 'atob';
+import piexif from 'piexifjs';
+import lz from 'lz-string';
+import b64toBlob from 'b64-to-blob';
 
 let router = Router();
 let imagesTable = new Table('images');
@@ -70,11 +72,60 @@ router.get('/:id?', (req, res) => {
 
 
 
-//POST BASE64 IMAGE TO DB
+//POST IMAGE AND IMAGE DATA TO DB
 router.post('/', (req, res) => {
+
+    //////////   gets exif data
+    let exifObj = piexif.load(req.body.uri);
+    // console.log(exifObj);
+    //// latitude
+    let exifLat = (`${exifObj.GPS[2][0][0]}.${exifObj.GPS[2][1][0]}${exifObj.GPS[2][2][0]}`);
+    //// longitude
+    let exifLng = (`-${exifObj.GPS[4][0][0]}.${exifObj.GPS[4][1][0]}${exifObj.GPS[4][2][0]}`); /// have to write if statements for people to add negatives for other hemispheres
+    //// width
+    let exifW = exifObj.Exif[40962];
+    //// Height
+    let exifH = exifObj.Exif[40963];
+    //// Orientation
+    let exifOr = 0;
+    
+    if (exifW >= exifH) {
+        exifOr = 1;
+    } else if (exifW < exifH) {
+        exifOr = 2;
+    } else if (exifW = exifH) {
+        exifOr = 3;
+    };
+
+    // console.log(`lat = ${exifLat}, lng = ${exifLng}, Height = ${exifH}, Width = ${exifW}, Orientation = ${exifOr}`);
+
+
+    var tagHolder = (`"${req.body.uri.split(',')[1]}"`)
+
+    // let byteChars = atob(req.body.uri);
+    // let byteNums = new Array(byteChars.length);
+    // for (var i = 0; i < byteChars.length; i++) {
+    //     byteNums[i] = byteChars.charCodeAt(i);
+    // }
+
+    // let byteArr = new Uint8Array(byteNumbs);
+    // let blob = new Blob([byteArray], {type: `image/${tagHolder}`})
+
+    // let blob = b64toBlob(req.body.uri, {type: `image/${tagHolder}`}) 
+
+
+
+    ///////// takes off beginning base64 tag
     var dataHolder = (`"${req.body.uri.split(',')[1]}"`);
-    console.log(dataHolder);
-    let sql = `INSERT INTO images (image) VALUES (${dataHolder})`;
+    // console.log(dataHolder);
+
+    ///////// compresses data
+    // console.log("original size: " + dataHolder.length);
+    // let compressed = lz.compress(dataHolder);
+    // console.log("compressed size " + compressed.length);
+
+    //////// sends to database
+    let sql = `INSERT INTO images (image, lat, lng, height, width, orientation, userid, stopid, URL) VALUES (${dataHolder}, ${exifLat}, ${exifLng}, ${exifH}, ${exifW}, ${exifOr}, 31, 21, "wide")`;
     executeQuery(sql, req)
 });
 

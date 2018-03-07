@@ -1,8 +1,15 @@
 import {Router} from 'express'
 import Table from '../table';
+// import { tokenMiddleware, isLoggedIn } from '../middleware/auth.mw';
 
 let router = Router();
 let classTable = new Table('users');
+
+
+
+// router.get('/me', tokenMiddleware, isLoggedIn, (req, res) => {
+//     res.json(req.user);
+// });
 
 router.get('/', (req, res) => {
     console.log('get all users');
