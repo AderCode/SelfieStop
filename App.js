@@ -3,15 +3,18 @@ import { View, StatusBar } from 'react-native'
 import { StackNavigator } from 'react-navigation'
 import LinearGradient from 'react-native-linear-gradient'
 
+//Screens
 import HomeScreen from './screens/HomeScreen'
 import UploadScreen from './screens/UploadScreen'
+import SplashScreen from './screens/SplashScreen'
 
 const RootNavigator = StackNavigator({
+  Splash: { screen: SplashScreen },
   Home: { screen: HomeScreen },
   Upload: { screen: UploadScreen }
   },
   { headerMode: 'none' },
-  {initialRoute: 'Home'}
+  {initialRoute: 'Splash'}
   );
 
 export default class App extends Component {
