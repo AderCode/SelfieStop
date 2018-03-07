@@ -1,5 +1,9 @@
 # SelfieStop Mobile App
 
+## v0.1.2
+
+- Added Login Screen dev functionality. Waiting on server routes to test further.
+
 ## v0.1.1
 
 - Added Splash Screen with logo and loading indicator

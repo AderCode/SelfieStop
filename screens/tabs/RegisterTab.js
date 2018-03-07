@@ -18,8 +18,7 @@ export default class RegisterTab extends Component {
             name: '',
             email: '',
             password: '',
-            passwordVerify: '',
-            passHash: ''
+            passwordVerify: ''
         }
     }
     render() {
@@ -28,7 +27,7 @@ export default class RegisterTab extends Component {
         return (
             <View style={styles.root}>
                 <View style={styles.container}>
-                <Text style={styles.label}>Name:</Text>
+                    <Text style={styles.label}>Name:</Text>
                     <TextInput
                         placeholder="Name"
                         style={styles.input}
@@ -48,6 +47,7 @@ export default class RegisterTab extends Component {
                     <TextInput
                         placeholder="Password"
                         style={styles.input}
+                        secureTextEntry={true}
                         ref={(el) => { this.password = el; }}
                         onChangeText={(password) => this.setState({ password })}
                         value={this.state.password}
@@ -57,6 +57,7 @@ export default class RegisterTab extends Component {
                     <TextInput
                         placeholder="Verify Password"
                         style={styles.input}
+                        secureTextEntry={true}
                         ref={(el) => { this.passwordVerify = el; }}
                         onChangeText={(passwordVerify) => this.setState({ passwordVerify })}
                         value={this.state.passwordVerify}

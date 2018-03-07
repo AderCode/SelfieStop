@@ -66,7 +66,7 @@ export default class LoginScreen extends Component {
 
     handleLogin() {
         return (
-            <TabNavigation />
+            <TabNavigation screenProps={{ navigate: this.handleNavigate.bind(this)}} />
         )
     }
 
