@@ -1,5 +1,9 @@
 # SelfieStop Mobile App
 
+## v0.1.3
+
+- Added Register Screen dev functionality. Need to test on server routes.
+
 ## v0.1.2
 
 - Added Login Screen dev functionality. Waiting on server routes to test further.
