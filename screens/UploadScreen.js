@@ -57,16 +57,17 @@ export default class SubmissionScreen extends Component {
 
     async fetchImages(data) {
         try {
+            let localTunnel = "https://lkuadxiclv.localtunnel.me/"
             let apiUrl = 'https://powerful-savannah-66747.herokuapp.com/api/images'
-            let ipUrl = 'https://zdkwwnlgii.localtunnel.me//api/images'
-            let results = await fetch({ url: apiUrl }, {
+            let ipUrl = `${localTunnel}api/images`
+            let results = await fetch({ url: ipUrl }, {
                 body: data, // must match 'Content-Type' header
                 headers: {
                     'content-type': 'application/json'
                 },
                 method: 'POST',
             });
-            // this.setState({ log: `results = ${JSON.stringify(results)}` })
+            console.log(results)
         } catch (e) {
             this.consoleLog("HomeScreen Stops Fetch Error = ", e)
         }

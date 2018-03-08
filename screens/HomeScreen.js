@@ -17,15 +17,6 @@ import Map from '../components/Map'
 import NearbyPlaceCard from '../components/NearbyPlaceCard'
 import NavBar from '../components/NavBar'
 
-
-let options = {
-    title: 'Upload a Selfie',
-    storageOptions: {
-        skipBackup: true,
-        path: 'images'
-    }
-};
-
 export default class HomeScreen extends Component {
     constructor(props) {
         super(props);

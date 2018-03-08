@@ -48,14 +48,14 @@ export default class LoginTab extends Component {
         // } catch (e) {
         //     console.log(`¯l_(ツ)_/¯`)
         // }
-        // await this.handleStoreAuthToken();
+        // await this.handleStoreAuthToken(token);
         // await this.handleNavigate('Home')
         this.state.email !== '' && this.state.password !== '' ? this.handleNavigate('Home') : this.setState({ emailErr: true, passwordErr: true})
 
     }
 
-    async handleStoreAuthToken() {
-        // Store token received in AsyncStorage
+    async handleStoreAuthToken(token) {
+        await AsyncStorage.setItem('auth', JSON.stringify(token))
     }
 
     handleNavigate(screen) {
