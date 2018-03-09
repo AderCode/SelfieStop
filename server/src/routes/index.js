@@ -11,8 +11,12 @@ import StopsRouter from './stops';
 import UsersRouter from './users';
 import ImagesRouter from './images';
 import NearRouter from './nearby';
+import RegisterRouter from './register';
 
 let router = Router();
+
+
+router.use('/register', RegisterRouter);
 
 router.use('/auth', authRouter);
 

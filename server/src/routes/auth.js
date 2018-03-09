@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
+import { makeHash } from "../utils/hash";
+
 let router = Router();
 
 router.post('/login', (req, res, next) => {
@@ -13,12 +15,20 @@ router.post('/login', (req, res, next) => {
             return res.status(201).json(tok);
         }
     })(req, res, next);
-
- 
     // console.log(req.body.email);
     // console.log(req.body.password);
     // console.log(req.body);
     // res.sendStatus(200)
+});
+
+router.get("/generate/:pw", (req, res, next) => {
+    makeHash(req.params.pw)
+        .then(hash => {
+            res.send(hash);
+        })
+        .catch(err => {
+            next(err);
+        });
 });
 
 export default router;

@@ -24,7 +24,7 @@ router.get('/nearby', (req, res) => {
                 u.firstname as uploadedby,
                 u2.firstname as stopsubmittedby
 
-                from userstops us
+               from userstops us
                 join images i on i.id=us.imageid
                 join stops s on s.id=us.stopid
                 join users u on u.id=us.userid
