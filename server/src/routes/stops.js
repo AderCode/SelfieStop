@@ -44,6 +44,16 @@ router.get('/', (req, res) => {
         });
 });
 
+router.get('/web', (req, res) => {
+    console.log('get all web stops');
+    imagesTable.getAll()
+        .then((results) => {
+            res.json(results);
+        }).catch((err) => {
+            console.log(err);
+            res.sendStatus(500);
+        });
+});
 
 
 router.get('/:id?', (req, res) => {

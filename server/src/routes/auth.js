@@ -12,13 +12,9 @@ router.post('/login', (req, res, next) => {
         } else if (!tok) {
             return res.status(401).json(info);
         } else {
-            return res.status(201).json(tok);
+            return res.send(tok, 201);
         }
     })(req, res, next);
-    // console.log(req.body.email);
-    // console.log(req.body.password);
-    // console.log(req.body);
-    // res.sendStatus(200)
 });
 
 router.get("/generate/:pw", (req, res, next) => {
