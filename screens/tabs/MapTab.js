@@ -3,7 +3,8 @@ import {
     View,
     StyleSheet,
     Text,
-    TouchableNativeFeedback,
+    TouchableOpacity,
+    AsyncStorage
 } from "react-native";
 import { Icon } from "react-native-elements";
 import ImagePicker from 'react-native-image-picker'
@@ -26,14 +27,60 @@ export default class MapTab extends Component {
         ImagePicker.launchCamera(options, (response) => { });
     }
 
+    async logout() {
+        await AsyncStorage.multiRemove(['auth', 'userId']);
+        await this.navigate('Splash')
+    }
+
+    async fetchLogout() {
+        console.log('fetch activated')
+        let token = await AsyncStorage.getItem("auth");
+        let userid = await AsyncStorage.getItem("userId");
+        let apiUrl = `https://powerful-savannah-66747.herokuapp.com/api/auth/logout/${userid}`
+        let ipUrl = `https://smjetissah.localtunnel.me/api/auth/logout/${userid}`
+        let data = { userid }
+        try {
+            let results = await fetch({ url: apiUrl }, {
+                body: JSON.stringify(data), // must match 'Content-Type' header
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'content-type': 'application/json'
+                },
+                method: 'DELETE',
+            });
+            await console.log(results)
+            await results.status !== 200
+                ?
+                true
+                :
+                await this.logout();
+
+        } catch (e) {
+            console.log(e);
+            return;
+        }
+    }
+
+    async checkAsyncStorage() {
+        // PRODUCTION VALUES
+        let tokVal = await AsyncStorage.getItem("auth")
+        let usrVal = await AsyncStorage.getItem("userId")
+        await console.log(tokVal)
+        await console.log(usrVal)
+
+        // let allKeys = await AsyncStorage.getAllKeys()
+        // await console.log(allKeys)
+
+    }
+
     navigate(screen) {
-        this.props.navigation.navigate(`${screen}`)
+        this.props.screenProps.navigate(`${screen}`)
     }
 
     render() {
         console.log(this.props)
         return (
-            <View style={{ flex: 1}}>
+            <View style={{ flex: 1 }}>
 
                 <View style={{
                     height: 50,
@@ -43,27 +90,44 @@ export default class MapTab extends Component {
                     padding: 10
                 }}>
 
-                <TouchableNativeFeedback
-                        onPress={() => this.cam()}>
-                        <Icon
-                            name="camera"
-                            type="entypo"
-                            size={26}
-                            underlayColor={'rgb(3, 0, 255)'}
-                            containerStyle={{flex: 1, alignItems: 'baseline', justifyContent: 'center'}}
-                        />
-                    </TouchableNativeFeedback>
 
-                    <Text 
+                    <View style={{ flex: 1, alignItems: 'baseline', justifyContent: 'center' }}>
+                        <TouchableOpacity
+                            onPress={() => this.cam()}>
+                            <Icon
+                                name="camera"
+                                type="entypo"
+                                size={26}
+                                underlayColor={'rgb(3, 0, 255)'}
+                            />
+                        </TouchableOpacity>
+                    </View>
+
+
+                    <Text
                         style={{
-                            flex: 2, 
-                            alignSelf: 'center',
+                            flex: 2,
+                            textAlign: 'center',
                             justifyContent: 'center',
                             fontSize: 26,
                             color: 'black'
                         }}>
-                            Selfie Stops
+                        Selfie Stops
                         </Text>
+
+                    <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'flex-end' }}>
+                        <TouchableOpacity
+                            onPress={() => this.fetchLogout()}
+                        >
+                            <Icon
+                                name="log-out"
+                                type="feather"
+                                size={26}
+                                underlayColor={'rgb(3, 0, 255)'}
+                            />
+                        </TouchableOpacity>
+                    </View>
+
                 </View>
 
                 <View style={styles.map}>

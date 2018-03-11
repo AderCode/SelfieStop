@@ -123,7 +123,7 @@ export default class MainScreen extends Component {
     async fetchStops() {
         try {
             let apiUrl = 'https://powerful-savannah-66747.herokuapp.com/api/stops'
-            let ipUrl = 'https://ctasatgvhi.localtunnel.me/api/stops'
+            let ipUrl = 'https://smjetissah.localtunnel.me/api/stops'
             let results = await fetch({ url: apiUrl });
             let stops = await results.json();
             this.setState({ places: stops })
@@ -154,19 +154,23 @@ export default class MainScreen extends Component {
 
     async fetchOneStop(id) {
         try {
-            let apiUrl = 'https://powerful-savannah-66747.herokuapp.com/api/stops'
-            let ipUrl = `https://ctasatgvhi.localtunnel.me/api/stops/${id}`
+            let apiUrl = `https://powerful-savannah-66747.herokuapp.com/api/stops/${id}`
+            let ipUrl = `https://smjetissah.localtunnel.me/api/stops/${id}`
             let result = await fetch({ url: apiUrl });
             let stop = await result.json();
-            this.setState({ stop })
-            console.log(stop)
+            await this.setState({ stop })
+            console.log('stop = ', stop)
         } catch (e) {
             console.log("MainScreen Stop Fetch Error = ", e)
         }
     }
 
+    navigate(screen) {
+        this.props.navigation.navigate(screen)
+    }
 
     render() {
-        return this.state.isLoaded ? <TabNavigation screenProps={{ mainState: this.state, stopDetails: this.stopDetails.bind(this) }} /> : <Loading />
+        console.log('1', this.state.stop)
+        return this.state.isLoaded ? <TabNavigation screenProps={{ mainState: this.state, stopDetails: this.stopDetails.bind(this), navigate: this.navigate.bind(this) }} /> : <Loading />
     }
 }

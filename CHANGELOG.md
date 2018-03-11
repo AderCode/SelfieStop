@@ -1,5 +1,15 @@
 # SelfieStop Mobile App
 
+## v0.1.7
+
+- Full authentication on Splash Screen, Login Tab, Register Tab, & Add Stop Tab
+- Deleting tokens from database when logging out
+- Deleting tokens upon server rejections
+
+## v0.1.6
+
+- Restyled login and register tabs to match the rest of the app
+
 ## v0.1.5
 
 - Changed from main navigation being Stack to Tab navigation

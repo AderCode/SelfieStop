@@ -10,7 +10,6 @@ import SplashScreen from './screens/SplashScreen'
 
 const RootNavigator = StackNavigator({
   Splash: { screen: SplashScreen },
-  Upload: { screen: UploadScreen }, // Home should be on this line!!!
   Main: { screen: MainScreen }
   },
   { headerMode: 'none' },

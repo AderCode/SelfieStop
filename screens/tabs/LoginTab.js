@@ -7,7 +7,7 @@ import {
     Text,
     TextInput,
     Image,
-    TouchableNativeFeedback,
+    TouchableOpacity,
     AsyncStorage
 } from 'react-native'
 import Logo from '../../images/splash_logo.png'
@@ -24,54 +24,66 @@ export default class LoginTab extends Component {
         this.state = {
             email: 'test@test.com',
             password: '',
-            emailErr: false,
-            passwordErr: false
+            err: ''
         }
     }
 
     async handleLogin() {
-        // let data = {
-        //     email: this.state.email,
-        //     password: this.state.password
-        // }
-        // let apiUrl = 'https://powerful-savannah-66747.herokuapp.com/api/auth/login'
-        // let ipUrl = 'https://mepueyxchq.localtunnel.me/api/auth/login'
-        // try {
+        let data = {
+            email: this.state.email,
+            password: this.state.password
+        }
+        let apiUrl = 'https://powerful-savannah-66747.herokuapp.com/api/auth/login'
+        let ipUrl = 'https://smjetissah.localtunnel.me/api/auth/login'
+        try {
 
-        //     let results = await fetch({ url: ipUrl }, {
-        //         body: JSON.stringify(data), // must match 'Content-Type' header
-        //         headers: {
-        //             'content-type': 'application/json'
-        //         },
-        //         method: 'POST',
-        //     });
-        //     await console.log(JSON.parse(results._bodyInit).token)
-        //     await this.handleStoreAuthToken(JSON.stringify(JSON.parse(results._bodyInit).token));
-        //     await console.log(await AsyncStorage.getItem('auth'))
-        //     // await this.handleNavigate('Home')
+            let results = await fetch({ url: apiUrl }, {
+                body: JSON.stringify(data), // must match 'Content-Type' header
+                headers: {
+                    'content-type': 'application/json'
+                },
+                method: 'POST',
+            });
+            await console.log(results)
+            results.status !== 201
+                ?
+                await this.setState({ err: JSON.parse(results._bodyInit).message })
+                :
+                await this.handleStoreAuthToken(JSON.stringify(JSON.parse(results._bodyInit).token), JSON.stringify(JSON.parse(results._bodyInit).userId));
+            // await console.log(await AsyncStorage.getItem('auth'))
+            // await this.handleNavigate('Home')
 
-        // } catch (e) {
-        //     console.log(`¯l_(ツ)_/¯ - "dunno, was a login error I guess. Here's what it says, so you tell me, man..." : \n`, e)
-        // }
+        } catch (e) {
+            console.log(`¯l_(ツ)_/¯ - "dunno, was a login error I guess. Here's what it says, so you tell me, man..." : \n`, e)
+        }
 
 
-        this.state.email !== '' && this.state.password !== '' ? this.handleNavigate('Home') : this.setState({ emailErr: true, passwordErr: true})
+        // this.state.email !== '' && this.state.password !== '' ? this.handleNavigate('Home') : this.setState({ emailErr: true, passwordErr: true})
 
     }
 
-    async handleStoreAuthToken(token) {
-        console.log('-- handling token --')
+    async handleStoreAuthToken(token, userId) {
+        console.log('-- handling token --\n', token)
         try {
-            await AsyncStorage.setItem("@auth:key", token)
-            await console.log('successful token storage?')
+            await AsyncStorage.setItem("auth", token)
+            await AsyncStorage.setItem("userId", userId)
+            // await console.log('successful token storage')
+            await this.handleNavigate('Main')
         } catch (e) {
             console.log('error storing token: \n', e)
         }
     }
 
     async checkAsyncStorage() {
-       let val = await AsyncStorage.getItem("@auth:key")
-       await console.log(val)
+        // PRODUCTION VALUES
+        let tokVal = await AsyncStorage.getItem("auth")
+        let usrVal = await AsyncStorage.getItem("userId")
+        await console.log(tokVal)
+        await console.log(usrVal)
+
+        // let allKeys = await AsyncStorage.getAllKeys()
+        // await console.log(allKeys)
+
     }
 
     handleNavigate(screen) {
@@ -79,14 +91,17 @@ export default class LoginTab extends Component {
     }
 
     render() {
+        console.log(this.state)
         let emailMsg = '*Incorrect email';
         let passMsg = '*Incorrect password';
         errMsg = (x) => { return <Text style={{ color: 'red' }}>{x}</Text> }
         return (
             <View style={styles.root}>
                 <View style={styles.container}>
-                    <Image source={Logo} style={styles.logo} />
-                    <Text style={styles.label}>Email: {this.state.emailErr ? errMsg(emailMsg) : false}</Text>
+
+                    <Image source={Logo} style={styles.logo}  />
+
+                    <Text style={styles.label}>Email: {this.state.err == 'email' ? errMsg(emailMsg) : false}</Text>
                     <TextInput
                         placeholder="Email"
                         style={styles.input}
@@ -94,7 +109,7 @@ export default class LoginTab extends Component {
                         onChangeText={(email) => this.setState({ email })}
                         value={this.state.email}
                     />
-                    <Text style={styles.label}>Password: {this.state.passwordErr ? errMsg(passMsg) : false}</Text>
+                    <Text style={styles.label}>Password: {this.state.err == 'pass' ? errMsg(passMsg) : false}</Text>
                     <TextInput
                         placeholder="Password"
                         secureTextEntry={true}
@@ -103,15 +118,19 @@ export default class LoginTab extends Component {
                         onChangeText={(password) => this.setState({ password })}
                     />
 
-                    <TouchableNativeFeedback
-                        onPress={() => { this.handleLogin() }}
-                    >
-                        <View style={styles.btnContainer}>
-                            <Text style={{ fontSize: 30, color: 'white' }}>
-                                Login
-                                    </Text>
-                        </View>
-                    </TouchableNativeFeedback>
+
+                    <View style={styles.btnContainer}>
+                        <TouchableOpacity
+                            onPress={() => { this.handleLogin() }}
+                        >
+                            <Icon
+                                name="login"
+                                type="entypo"
+                                size={50}
+                            />
+                        </TouchableOpacity>
+                    </View>
+
 
                 </View>
             </View>
@@ -151,8 +170,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         margin: 30,
-        backgroundColor: 'rgb(0, 142, 255)',
+        backgroundColor: 'white',
         borderRadius: 7,
+        borderWidth: 1,
         padding: 2,
         alignSelf: 'center'
     }

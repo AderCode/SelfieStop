@@ -10,6 +10,8 @@ import {
 import { TabNavigator } from 'react-navigation'
 import SplashLogo from '../images/splash_logo.png'
 
+import APIs from '../services/api'
+
 //Tab Screens
 import LoginTab from './tabs/LoginTab'
 import RegisterTab from './tabs/RegisterTab'
@@ -17,6 +19,18 @@ import RegisterTab from './tabs/RegisterTab'
 const TabNavigation = TabNavigator({
     Login: { screen: LoginTab },
     Register: { screen: RegisterTab }
+}, {
+    lazy: 'true',
+    tabBarOptions: {
+        labelStyle: {
+            fontSize: 11,
+            color: 'black'
+        },
+        style: {
+            backgroundColor: 'white',
+            height: 50 // I didn't use this in my app, so the numbers may be off. 
+        }
+    }
 });
 
 
@@ -25,8 +39,8 @@ export default class LoginScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            authChecked: false, // set to false for production build
-            isLoggedIn: true //false // set to false for production build
+            authChecked: true, // set to false for production build
+            isLoggedIn: false //false // set to false for production build
         }
     }
 
@@ -36,36 +50,57 @@ export default class LoginScreen extends Component {
 
     async handleCheckAuth() {
         // DEV MODE //
-        this.state.isLoggedIn ? this.handleNavigate('Main') : this.setState({ authChecked: true })
+        // this.state.isLoggedIn ? this.handleNavigate('Main') : this.setState({ authChecked: true })
 
         // PRODUCTION MODE //
-        // await AsyncStorage.getItem('auth', async (err, results) => {
-        //     err ? console.log(`¯l_(ツ)_/¯ AsyncStorage.getItem ERROR: `, err) : results ? await this.handleFetchAuth(results) : console.log(`¯l_(ツ)_/¯ AsyncStorage.getItem ERROR & RESULTS FAILURE!!!: so, uh, something else went wrong, but it didn't tell me anything... (x.x)`)
-        // })
+        try {
+            let token = await AsyncStorage.getItem('auth');
+            token ?
+
+            await this.handleFetchAuth(token) : false
+            // this.setState({ authChecked: true})
+           
+        } catch (e) {
+            alert(`Error fetching Token`);
+            console.log(e)
+        }
     }
 
     async handleFetchAuth(token) {
         let data = { token }
-        let apiUrl = 'https://powerful-savannah-66747.herokuapp.com/api/auth'
-        let ipUrl = 'From Bruce when using local tunnel'
+        let apiUrl = 'https://powerful-savannah-66747.herokuapp.com/api/users/me'
+        let ipUrl = 'https://smjetissah.localtunnel.me/api/users/me'
         let results;
         try {
             results = await fetch({ url: apiUrl }, {        // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-                body: JSON.stringify(data),                 // IF SERVER HAS ISSUES RECEIVING || PARSING req.body TRY REMOVING JSON.stringify() //
-                headers: {                                  //          SINCE TOKEN IS STRINGIFIED BEFORE BEING STORED IN ASYNCSTORAGE          //
+                // body: JSON.stringify(data),                 // IF SERVER HAS ISSUES RECEIVING || PARSING req.body TRY REMOVING JSON.stringify() //
+                headers: {                    
+                    'Authorization': `Bearer ${token}` ,             //          SINCE TOKEN IS STRINGIFIED BEFORE BEING STORED IN ASYNCSTORAGE          //
                     'content-type': 'application/json'      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // 
                 },
-                method: 'POST',
+                method: 'GET',
             });
+            console.log(results)
+            results.status !== 200 
+            ?
+            this.setState({ authChecked: true })
+            :
+            await this.handleNavigate('Main')
         } catch (e) {
             console.log(`¯l_(ツ)_/¯`);
             this.setState({ authChecked: true })
-        }                                                              // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-        results == results ? await this.handleNavigate('Home') : false // !!! MUST ADD VARIABLE TO CHECK RESULTS AGAINST TO VERIFY LOGGED IN OR NOT !!! //
+        }      
+        // console.log(results)                                                        // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+        // results == results ? await this.handleNavigate('Home') : false // !!! MUST ADD VARIABLE TO CHECK RESULTS AGAINST TO VERIFY LOGGED IN OR NOT !!! //
     }                                                                  // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 
     handleNavigate(screen) {
         this.props.navigation.navigate(`${screen}`)
+    }
+
+    async handleRejection() {
+        await AsyncStorage.multiRemove(['auth', 'userId'])
+        await this.setState({ authChecked: true })
     }
 
     // !!! Needs to have logo and loading indicator
@@ -76,7 +111,7 @@ export default class LoginScreen extends Component {
                 <Text style={styles.label}>
                     Loading...
                 </Text>
-                <ActivityIndicator size='large' />
+                <ActivityIndicator size='large' color="black" />
             </View>
         )
     }

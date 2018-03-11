@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, View, StyleSheet, Text, TextInput, Button, Alert, CameraRoll, Image, Platform, TouchableOpacity } from "react-native";
+import { ScrollView, View, StyleSheet, Text, TextInput, AsyncStorage, Button, Alert, CameraRoll, Image, Platform, TouchableOpacity } from "react-native";
 import { Icon } from 'react-native-elements'
 import LinearGradient from 'react-native-linear-gradient'
 import ImagePicker from 'react-native-image-picker'
@@ -56,12 +56,14 @@ export default class SubmissionScreen extends Component {
 
         console.log('we ready to fetch, heres data:', data)
         try {
-            let localTunnel = "https://rxaahfxlzq.localtunnel.me/" // last updated: 3/10/18 7:00pm
+            let localTunnel = "https://fhtkncsjab.localtunnel.me/" // last updated: 3/10/18 7:00pm
             let heroku = 'https://powerful-savannah-66747.herokuapp.com/'
+            let token = await AsyncStorage.getItem("auth")
             let results = await fetch({ url: `${heroku}api/stops` }, {
                 body: JSON.stringify(data), // must match 'Content-Type' header
                 headers: {
-                    'content-type': 'application/json'
+                    'Authorization': `Bearer ${token}`,
+                    'content-type': 'application/json'  
                 },
                 method: 'POST',
             });
@@ -252,7 +254,7 @@ export default class SubmissionScreen extends Component {
                             />
                         </View>
 
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 40, marginBottom: 40 }} >
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 40, marginBottom: 20 }} >
                             <TouchableOpacity
                                 onPress={() => this.cam()}
                             >

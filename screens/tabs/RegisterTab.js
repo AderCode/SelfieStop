@@ -5,7 +5,7 @@ import {
     Text,
     TextInput,
     Image,
-    TouchableNativeFeedback,
+    TouchableOpacity,
     AsyncStorage
 } from 'react-native'
 import Logo from '../../images/splash_logo.png'
@@ -17,7 +17,7 @@ export default class RegisterTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: null,
+            username: null,
             email: null,
             emailValid: null,
             password: null,
@@ -30,7 +30,7 @@ export default class RegisterTab extends Component {
 
     resetState() {
         this.setState({
-            name: null,
+            username: null,
             email: null,
             emailValid: null,
             password: null,
@@ -41,23 +41,19 @@ export default class RegisterTab extends Component {
         })
     }
 
-    handleRegister() {
+    async handleRegister() {
+        let data = {
+            username: this.state.username,
+            email: this.state.email,
+            password: this.state.password
+        }
         this.state.passwordsMatch
             && this.state.password
             && this.state.passwordVerify
             && this.state.email
-            && this.state.name
+            && this.state.username
             ?
-            // async () => {
-            //     let data = {
-            //         name: this.state.name,
-            //         email: this.state.email,
-            //         password: this.state.password
-            //     }
-            //     await this.fetchRegister(data)
-            //     await this.handleNavigate('Login')
-            // }
-            this.handleNavigate('Login') 
+            await this.fetchRegister(data)
             :
             this.setState({ requiredErr: true })
     }
@@ -75,16 +71,23 @@ export default class RegisterTab extends Component {
     }
 
     async fetchRegister(data) {
-        let apiUrl = 'https://powerful-savannah-66747.herokuapp.com/api/auth/login'
-        let ipUrl = 'From Bruce when using local tunnel'
+        console.log('fetch activated')
+        let apiUrl = 'https://powerful-savannah-66747.herokuapp.com/api/register'
+        let ipUrl = 'https://fhtkncsjab.localtunnel.me/api/register'
         try {
-            let results = await fetch({ url: apiUrl }, {
+            let results = await fetch({ url: ipUrl }, {
                 body: JSON.stringify(data), // must match 'Content-Type' header
                 headers: {
                     'content-type': 'application/json'
                 },
                 method: 'POST',
             });
+            results.status === 200
+                ?
+                this.handleNavigate('Login')
+                :
+                this.setState({ emailErr: true })
+
         } catch (e) {
             console.log(e);
             this.setState({ emailErr: true });
@@ -108,13 +111,13 @@ export default class RegisterTab extends Component {
             <View style={styles.root}>
                 <View style={styles.container}>
                     <Image source={Logo} style={styles.logo} />
-                    <Text style={styles.label}>Name: {this.state.requiredErr ? errMsg($nameErrMsg1) : false}</Text>
+                    <Text style={styles.label}>Username: {this.state.requiredErr ? errMsg($nameErrMsg1) : false}</Text>
                     <TextInput
-                        placeholder="Name"
+                        placeholder="Username"
                         style={styles.input}
-                        ref={(el) => { this.name = el; }}
-                        onChangeText={(name) => this.setState({ name })}
-                        value={this.state.name}
+                        ref={(el) => { this.username = el; }}
+                        onChangeText={(username) => this.setState({ username })}
+                        value={this.state.username}
                     />
                     <Text style={styles.label}>Email: {this.state.requiredErr ? errMsg($emailErrMsg1) : this.state.emailErr ? errMsg($emailErrMsg2) : false}</Text>
                     <TextInput
@@ -144,15 +147,17 @@ export default class RegisterTab extends Component {
                         value={this.state.passwordVerify}
                     />
 
-                    <TouchableNativeFeedback
-                        onPress={() => this.handleRegister()}
-                    >
-                        <View style={styles.btnContainer}>
-                            <Text style={{ fontSize: 30, color: 'white' }}>
+
+                    <View style={styles.btnContainer}>
+                        <TouchableOpacity
+                            onPress={() => this.handleRegister()}
+                        >
+                            <Text style={{ fontSize: 30, color: 'black' }}>
                                 Register
                                     </Text>
-                        </View>
-                    </TouchableNativeFeedback>
+                        </TouchableOpacity>
+                    </View>
+
 
                 </View>
             </View>
@@ -192,7 +197,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         margin: 30,
-        backgroundColor: 'rgb(0, 142, 255)',
+        backgroundColor: 'white',
+        borderWidth: 1,
         borderRadius: 7,
         padding: 2,
         alignSelf: 'center'

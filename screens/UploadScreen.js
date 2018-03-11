@@ -64,7 +64,7 @@ export default class SubmissionScreen extends Component {
         try {
             let localTunnel = "https://rxaahfxlzq.localtunnel.me/" // last updated: 3/10/18 7:00pm
             let heroku = 'https://powerful-savannah-66747.herokuapp.com'
-            let results = await fetch({ url: `${localTunnel}api/stops` }, {
+            let results = await fetch({ url: `${heroku}api/stops` }, {
                 body: JSON.stringify(data), // must match 'Content-Type' header
                 headers: {
                     'content-type': 'application/json'
