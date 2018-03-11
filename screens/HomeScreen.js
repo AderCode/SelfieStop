@@ -17,6 +17,15 @@ import Map from '../components/Map'
 import NearbyPlaceCard from '../components/NearbyPlaceCard'
 import NavBar from '../components/NavBar'
 
+
+let options = {
+    title: 'Upload a Selfie',
+    storageOptions: {
+        skipBackup: true,
+        path: 'images'
+    }
+};
+
 export default class HomeScreen extends Component {
     constructor(props) {
         super(props);
@@ -24,7 +33,7 @@ export default class HomeScreen extends Component {
         this.state = {
             places: [],
             userLat: 33.515713,
-            userLng: 86.808878,
+            userLng: -86.808878,
         }
     }
 
@@ -75,13 +84,17 @@ export default class HomeScreen extends Component {
 
     async fetchStops() {
         try {
-            let results = await fetch({ url: 'https://powerful-savannah-66747.herokuapp.com/api/stops' });
+            let apiUrl = 'https://powerful-savannah-66747.herokuapp.com/api/stops'
+            let ipUrl = 'https://rxaahfxlzq.localtunnel.me/api/stops'
+            let results = await fetch({ url: ipUrl });
             let stops = await results.json();
             this.setState({ places: stops })
+            console.log(stops)
         } catch (e) {
             console.log("HomeScreen Stops Fetch Error = ", e)
         }
     }
+
 
     cam() {
         ImagePicker.launchCamera(options, (response) => { });
@@ -94,25 +107,26 @@ export default class HomeScreen extends Component {
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: 'grey' }}>
-               
-                    <View style={{
-                        backgroundColor: '#0084FF',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        justifyContent: 'space-around',
-                        borderColor: 'black',
-                        borderBottomWidth: 2.5,
-                        padding: 2,
-                    }}>
-                        <Text onPress={
-                            () => Alert.alert('You tapped the button!')} 
-                            style={{ alignSelf: 'center', 
-                            fontSize: 40, 
-                            color: 'white', 
-                            }}>
-                            Nearby Stops
+
+                <View style={{
+                    backgroundColor: '#0084FF',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    justifyContent: 'space-around',
+                    borderColor: 'black',
+                    borderBottomWidth: 2.5,
+                    padding: 2,
+                }}>
+                    <Text onPress={
+                        () => Alert.alert('You tapped the button!')}
+                        style={{
+                            alignSelf: 'center',
+                            fontSize: 40,
+                            color: 'white',
+                        }}>
+                        Nearby Stops
                         </Text>
-                        {/* <TouchableNativeFeedback
+                    {/* <TouchableNativeFeedback
                         onPress={() => { return }}>
                             <Icon
                             name="list"
@@ -120,7 +134,7 @@ export default class HomeScreen extends Component {
                             size={50}
                         />
                         </TouchableNativeFeedback> */}
-                    </View>
+                </View>
                 <View style={styles.map}>
                     <Map region={{
                         latitude: this.state.userLat,
@@ -154,17 +168,17 @@ export default class HomeScreen extends Component {
                         })}
                     </View>
                 </ScrollView> */}
-                
-                    <View style={{
-                        backgroundColor: '#0084FF',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        justifyContent: 'space-around',
-                        borderColor: 'black',
-                        borderTopWidth: 2.5,
-                        padding: 2,
-                    }}>
-                        <TouchableNativeFeedback
+
+                <View style={{
+                    backgroundColor: '#0084FF',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    justifyContent: 'space-around',
+                    borderColor: 'black',
+                    borderTopWidth: 2.5,
+                    padding: 2,
+                }}>
+                    <TouchableNativeFeedback
                         onPress={() => this.navigate('Upload')}>
                         <Icon
                             name="add-location"
@@ -172,9 +186,9 @@ export default class HomeScreen extends Component {
                             size={50}
                             underlayColor={'rgb(3, 0, 255)'}
                         />
-                        </TouchableNativeFeedback>
+                    </TouchableNativeFeedback>
 
-                        <TouchableNativeFeedback
+                    <TouchableNativeFeedback
                         onPress={() => this.cam()}>
                         <Icon
                             name="camera"
@@ -182,9 +196,9 @@ export default class HomeScreen extends Component {
                             size={50}
                             underlayColor={'rgb(3, 0, 255)'}
                         />
-                        </TouchableNativeFeedback>
+                    </TouchableNativeFeedback>
 
-                        {/* <TouchableNativeFeedback
+                    {/* <TouchableNativeFeedback
                         onPress={() => this.getUserLocation()}>
                             <Icon
                             name="my-location"
@@ -192,8 +206,8 @@ export default class HomeScreen extends Component {
                             size={50}
                         />
                         </TouchableNativeFeedback> */}
-                    </View>
-     </View>
+                </View>
+            </View>
         );
     }
 }

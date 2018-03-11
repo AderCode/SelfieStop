@@ -1,5 +1,16 @@
 # SelfieStop Mobile App
 
+## v0.1.5
+
+- Changed from main navigation being Stack to Tab navigation
+- Added Details Tab
+- Added Search Tab
+- Added Add Stop Tab
+- Restyled to a more familiar feel for users, without color saturation
+- Added AWS S3 upload functionality to Add Stop Tab
+- Added distance calculations
+- Improved accuracy on New Stop added
+
 ## v0.1.3
 
 - Added Register Screen dev functionality. Need to test on server routes.

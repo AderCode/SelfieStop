@@ -36,7 +36,7 @@ export default class LoginScreen extends Component {
 
     async handleCheckAuth() {
         // DEV MODE //
-        this.state.isLoggedIn ? this.handleNavigate('Home') : this.setState({ authChecked: true })
+        this.state.isLoggedIn ? this.handleNavigate('Main') : this.setState({ authChecked: true })
 
         // PRODUCTION MODE //
         // await AsyncStorage.getItem('auth', async (err, results) => {

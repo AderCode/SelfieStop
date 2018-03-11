@@ -1,6 +1,8 @@
 **/*/ENV_VAR
 ENV_VAR
 
+keys.js
+
 # OSX
 #
 .DS_Store

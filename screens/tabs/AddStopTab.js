@@ -1,16 +1,10 @@
 import React, { Component } from "react";
-import { ScrollView, View, StyleSheet, Text, TextInput, Button, Alert, CameraRoll, Image, Platform, TouchableNativeFeedback } from "react-native";
+import { ScrollView, View, StyleSheet, Text, TextInput, Button, Alert, CameraRoll, Image, Platform, TouchableOpacity } from "react-native";
 import { Icon } from 'react-native-elements'
 import LinearGradient from 'react-native-linear-gradient'
 import ImagePicker from 'react-native-image-picker'
-import Keys from '../services/keys'
+import Keys from '../../services/keys'
 import { RNS3 } from 'react-native-aws3'
-
-
-
-import Console from '../components/Console' // For on screen console
-import NavBar from '../components/NavBar'
-
 
 let options = {
     title: 'Upload a Selfie',
@@ -41,11 +35,11 @@ export default class SubmissionScreen extends Component {
 
 
     async getImageLocation() {
-        
+
         await navigator.geolocation.getCurrentPosition(res => {
             this.setState({
-                    lat: res.coords.latitude,
-                    lng: res.coords.longitude
+                lat: res.coords.latitude,
+                lng: res.coords.longitude
             })
         },
             err => {
@@ -57,14 +51,14 @@ export default class SubmissionScreen extends Component {
 
 
     async fetchImages() {
-        let { userId, name, description, city, lat, lng, imgUrl} = this.state;
-        let data = {name, description, city, imgurl: imgUrl, lat, lng, userid: userId}
+        let { userId, name, description, city, lat, lng, imgUrl } = this.state;
+        let data = { name, description, city, imgurl: imgUrl, lat, lng, userid: userId }
 
         console.log('we ready to fetch, heres data:', data)
         try {
             let localTunnel = "https://rxaahfxlzq.localtunnel.me/" // last updated: 3/10/18 7:00pm
-            let heroku = 'https://powerful-savannah-66747.herokuapp.com'
-            let results = await fetch({ url: `${localTunnel}api/stops` }, {
+            let heroku = 'https://powerful-savannah-66747.herokuapp.com/'
+            let results = await fetch({ url: `${heroku}api/stops` }, {
                 body: JSON.stringify(data), // must match 'Content-Type' header
                 headers: {
                     'content-type': 'application/json'
@@ -72,6 +66,7 @@ export default class SubmissionScreen extends Component {
                 method: 'POST',
             });
             console.log(results)
+            this.reset()
         } catch (e) {
             console.log("Upload Fetch Error = ", e)
         }
@@ -95,18 +90,17 @@ export default class SubmissionScreen extends Component {
             successActionStatus: 201
         }
 
-      RNS3.put(file, options)
-       .then(
-            res => {
-                if (res.status !== 201) {
-                    console.log('uploadImg error: ', res)
-                    //   throw new Error("Failed to upload image to S3");
-                } else {
-                    console.log(res.body.postResponse.location);
-                   ////////////// // await SET STATE FOR data.imgUrl!!! /////////////////
-                    this.setState({ imgUrl: `${res.body.postResponse.location}` })
-                }
-            })
+        RNS3.put(file, options)
+            .then(
+                res => {
+                    if (res.status !== 201) {
+                        console.log('uploadImg error: ', res)
+                        //   throw new Error("Failed to upload image to S3");
+                    } else {
+                        console.log(res.body.postResponse.location);
+                        this.setState({ imgUrl: `${res.body.postResponse.location}` })
+                    }
+                })
             .then((res) =>
                 this.fetchImages()
             )
@@ -202,7 +196,8 @@ export default class SubmissionScreen extends Component {
         this.setState({
             source: null,
             name: null,
-            description: null
+            description: null, 
+            log: 'uploaded'
         })
     }
 
@@ -224,79 +219,69 @@ export default class SubmissionScreen extends Component {
         return (
             <View style={styles.container}>
                 <View style={{
-                    backgroundColor: '#0084FF',
+                    backgroundColor: 'white',
                     alignItems: 'center',
                     flexDirection: 'row',
                     justifyContent: 'space-around',
-                    borderColor: 'black',
-                    borderBottomWidth: 2.5,
-                    padding: 2,
+                    padding: 8,
+                    marginBottom: 7
                 }}>
-                    <Text style={styles.header} style={{ alignSelf: 'center', fontSize: 40, color: 'white' }} >Submit a New Stop</Text>
+                    <Text style={styles.header} style={{ alignSelf: 'center', fontSize: 26, color: 'black' }} >Submit a New Stop</Text>
                 </View>
 
                 <View style={styles.root}>
-                    <View style={{ backgroundColor: 'white', width: '97%', height: 200, margin: 10, borderColor: 'black', borderWidth: 2, justifyContent: 'center' }}>
+                    <View style={{ backgroundColor: 'white', width: '100%', height: 250, justifyContent: 'center' }}>
                         {$imagePreview}
                     </View>
-                    <View style={{ width: '97%', alignSelf: 'center', borderColor: 'black', borderWidth: 2, backgroundColor: 'white' }}>
-                        <TextInput
-                            placeholder="Location Name"
-                            style={styles.input}
-                            ref={(el) => { this.name = el; }}
-                            onChangeText={(name) => this.setState({ name })}
-                            value={this.state.name}
-                        />
-                        <TextInput
-                            placeholder="Location Description"
-                            style={styles.input}
-                            ref={(el) => { this.description = el; }}
-                            onChangeText={(description) => this.setState({ description })}
-                            value={this.state.description}
-                        />
-                        <TouchableNativeFeedback
-                            onPress={() => this.handleSubmit()}
-                        >
-                            <View style={{
-                                width: '40%',
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                margin: 30,
-                                backgroundColor: 'rgb(0, 132, 255)',
-                                borderColor: 'black',
-                                borderWidth: 2,
-                                borderRadius: 10,
-                                paddingTop: 2,
-                                paddingLeft: 4,
-                                paddingRight: 0,
-                                alignSelf: 'center'
-                            }}
+                    <View style={{ width: '100%', alignSelf: 'center', backgroundColor: 'white', marginTop: 10 }}>
+                    <Text style={{alignSelf: 'center'}}>*Preview represents how your image will be shown on the stop.</Text>
+                        <View style={{ marginTop: 10 }}>
+                            <TextInput
+                                placeholder="Location Name"
+                                style={styles.input}
+                                ref={(el) => { this.name = el; }}
+                                onChangeText={(name) => this.setState({ name })}
+                                value={this.state.name}
+                            />
+                            <TextInput
+                                placeholder="Location Description"
+                                style={styles.input}
+                                ref={(el) => { this.description = el; }}
+                                onChangeText={(description) => this.setState({ description })}
+                                value={this.state.description}
+                            />
+                        </View>
 
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 40, marginBottom: 40 }} >
+                            <TouchableOpacity
+                                onPress={() => this.cam()}
                             >
+                                    <Icon
+                                        name="add-a-photo"
+                                        type="materialicons"
+                                        size={50}
+                                    />
+                            </TouchableOpacity>
 
-
-
-                                <Text style={{ fontSize: 30, color: 'white' }}>
-                                    Submit
-                                </Text>
-                                <Icon
-                                    name="file-upload"
-                                    type="materialcommunityicons"
-                                    size={50}
-                                />
-                            </View>
-                        </TouchableNativeFeedback>
+                            <TouchableOpacity
+                                onPress={() => this.handleSubmit()}
+                            >
+                                    <Icon
+                                        name="file-upload"
+                                        type="materialcommunityicons"
+                                        size={50}
+                                    />
+                            </TouchableOpacity>
+                        </View>
                         {$msg}
                     </View>
 
 
                 </View>
-                {/* <Console log={this.state.log} /> */}
 
 
 
-                <View style={{
+                {/* <View style={{
                     backgroundColor: '#0084FF',
                     alignItems: 'center',
                     flexDirection: 'row',
@@ -305,18 +290,10 @@ export default class SubmissionScreen extends Component {
                     borderTopWidth: 2.5,
                     padding: 2,
                 }}>
-                    {/* <TouchableNativeFeedback
-                                onPress={() => this.navigate('Home')}
-                            >
-                                <Icon
-                                    name="home"
-                                    type="entypo"
-                                    size={50}
-                                />
-                            </TouchableNativeFeedback> */}
+                    
 
 
-                    <TouchableNativeFeedback
+                    <TouchableOpacity
                         onPress={() => this.cam()}
                     >
                         <Icon
@@ -324,26 +301,18 @@ export default class SubmissionScreen extends Component {
                             type="materialicons"
                             size={50}
                         />
-                    </TouchableNativeFeedback>
+                    </TouchableOpacity>
 
-                    {/* <TouchableNativeFeedback
-                        onPress={() => this.imagePicker()}
-                    >
-                        <Icon
-                            name="folder-add"
-                            type="foundation"
-                            size={50}
-                        />
-                    </TouchableNativeFeedback> */}
+                    
 
-                </View>
+                </View> */}
 
             </View>
         );
     }
 }
 const styles = StyleSheet.create({
-    container: { backgroundColor: "grey", flex: 1, flexDirection: 'column' },
+    container: { flex: 1, flexDirection: 'column' },
     root: { flex: 1, flexDirection: 'column', alignItems: 'center' },
     input: {
         backgroundColor: 'white',

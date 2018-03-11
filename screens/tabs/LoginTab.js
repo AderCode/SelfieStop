@@ -22,7 +22,7 @@ export default class LoginTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
+            email: 'test@test.com',
             password: '',
             emailErr: false,
             passwordErr: false
@@ -35,27 +35,43 @@ export default class LoginTab extends Component {
         //     password: this.state.password
         // }
         // let apiUrl = 'https://powerful-savannah-66747.herokuapp.com/api/auth/login'
-        // let ipUrl = 'From Bruce when using local tunnel'
+        // let ipUrl = 'https://mepueyxchq.localtunnel.me/api/auth/login'
         // try {
-            
-        //     let results = await fetch({ url: apiUrl }, {
+
+        //     let results = await fetch({ url: ipUrl }, {
         //         body: JSON.stringify(data), // must match 'Content-Type' header
         //         headers: {
         //             'content-type': 'application/json'
         //         },
         //         method: 'POST',
         //     });
+        //     await console.log(JSON.parse(results._bodyInit).token)
+        //     await this.handleStoreAuthToken(JSON.stringify(JSON.parse(results._bodyInit).token));
+        //     await console.log(await AsyncStorage.getItem('auth'))
+        //     // await this.handleNavigate('Home')
+
         // } catch (e) {
-        //     console.log(`¯l_(ツ)_/¯`)
+        //     console.log(`¯l_(ツ)_/¯ - "dunno, was a login error I guess. Here's what it says, so you tell me, man..." : \n`, e)
         // }
-        // await this.handleStoreAuthToken(token);
-        // await this.handleNavigate('Home')
+
+
         this.state.email !== '' && this.state.password !== '' ? this.handleNavigate('Home') : this.setState({ emailErr: true, passwordErr: true})
 
     }
 
     async handleStoreAuthToken(token) {
-        await AsyncStorage.setItem('auth', JSON.stringify(token))
+        console.log('-- handling token --')
+        try {
+            await AsyncStorage.setItem("@auth:key", token)
+            await console.log('successful token storage?')
+        } catch (e) {
+            console.log('error storing token: \n', e)
+        }
+    }
+
+    async checkAsyncStorage() {
+       let val = await AsyncStorage.getItem("@auth:key")
+       await console.log(val)
     }
 
     handleNavigate(screen) {
@@ -65,7 +81,7 @@ export default class LoginTab extends Component {
     render() {
         let emailMsg = '*Incorrect email';
         let passMsg = '*Incorrect password';
-        errMsg = (x) => {return <Text style={{color: 'red'}}>{x}</Text>}
+        errMsg = (x) => { return <Text style={{ color: 'red' }}>{x}</Text> }
         return (
             <View style={styles.root}>
                 <View style={styles.container}>
