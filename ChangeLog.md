@@ -1,6 +1,9 @@
 # SelfieStop Server 
 
 
+## version 0.1.7
+- accidentally created a general AI
+
 ## version 0.1.6
 - added salting and hashing
 
