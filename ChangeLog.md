@@ -1,5 +1,8 @@
 # SelfieStop Server 
 
+## version 0.1.8
+- authorization completed
+- AI has chosen the name Zobert, it seems harmless enough
 
 ## version 0.1.7
 - accidentally created a general AI

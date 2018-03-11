@@ -18,17 +18,17 @@ let router = Router();
 
 router.use('/register', RegisterRouter);
 
-// router.use('/auth', authRouter);
+router.use('/auth', authRouter);
 
 // router.use(tokenMiddleware);
 // router.use(isLoggedIn);
 // router.use('/donate', stripeDonationsRouter);
 // router.use('/contact', contactRouter);
 
-// router.route('*')
-//     .post(tokenMiddleware, isLoggedIn)
-//     .put(tokenMiddleware, isLoggedIn)
-//     .delete(tokenMiddleware, isLoggedIn);
+router.route('*')
+    .post(tokenMiddleware, isLoggedIn)
+    .put(tokenMiddleware, isLoggedIn)
+    .delete(tokenMiddleware, isLoggedIn);
 
 router.use('/near', NearRouter);
 router.use('/stops', StopsRouter);
