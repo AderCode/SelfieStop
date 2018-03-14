@@ -17,7 +17,7 @@ class Map extends Component {
     // }
 
     render() {
-        console.log("props", this.props)
+        // console.log("props", this.props)
         return (
             <MapView style={this.props.style}
                 region={this.props.region}

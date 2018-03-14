@@ -66,7 +66,7 @@ const TabNavigation = TabNavigator({
             activeTintColor: 'white',  // Color of tab when pressed
             inactiveTintColor: 'grey', // Color of tab when not pressed
             showIcon: 'true', // Shows an icon for both iOS and Android
-            activeBackgroundColor: 'black', 
+            activeBackgroundColor: 'black',
             showLabel: false, //No label for Android
             labelStyle: {
                 fontSize: 11,
@@ -114,7 +114,7 @@ export default class MainScreen extends Component {
             })
         },
             err => {
-                console.log("geo err = ", err);
+                // console.log("geo err = ", err);
                 return
             }, { enableHighAccuracy: true });
 
@@ -127,28 +127,23 @@ export default class MainScreen extends Component {
             let results = await fetch({ url: apiUrl });
             let stops = await results.json();
             this.setState({ places: stops })
-            console.log(stops)
+            // console.log(stops)
         } catch (e) {
-            console.log("HomeScreen Stops Fetch Error = ", e)
+            // console.log("HomeScreen Stops Fetch Error = ", e)
         }
     }
 
     async stopDetails(stopId) {
-        await this.setState({ stopId })
-        await this.fetchOneStop(stopId)
+        await this.setState({stopId})
+        await this.handleFetchStop(stopId)
     }
 
     async handleFetchStop(id) {
-        if (id) {
+       if (id) {
             await this.fetchOneStop(id)
         } else {
             let i = Math.floor(Math.random() * this.state.places.length)
             this.setState({ stop: this.state.places[i] })
-            console.log
-            console.log('this.state.places = ', this.state.places)
-            console.log('this.state.places.length = ', this.state.places.length)
-            console.log('i =', i)
-            console.log('this.state.places[i] = ', this.state.places[i])
         }
     }
 
@@ -159,9 +154,9 @@ export default class MainScreen extends Component {
             let result = await fetch({ url: apiUrl });
             let stop = await result.json();
             await this.setState({ stop })
-            console.log('stop = ', stop)
+            // console.log('stop = ', stop)
         } catch (e) {
-            console.log("MainScreen Stop Fetch Error = ", e)
+            // console.log("MainScreen Stop Fetch Error = ", e)
         }
     }
 
@@ -170,7 +165,7 @@ export default class MainScreen extends Component {
     }
 
     render() {
-        console.log('1', this.state.stop)
+        // console.log('1', this.state.stop)
         return this.state.isLoaded ? <TabNavigation screenProps={{ mainState: this.state, stopDetails: this.stopDetails.bind(this), navigate: this.navigate.bind(this) }} /> : <Loading />
     }
 }

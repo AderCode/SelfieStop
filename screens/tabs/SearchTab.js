@@ -5,7 +5,8 @@ import {
     Text,
     Image,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions
 } from 'react-native'
 import { Icon } from 'react-native-elements'
 
@@ -16,12 +17,14 @@ export default class SearchTab extends Component {
         this.state = {
             unit: 'M',
             stops: [],
-            isSorted: false
+            isSorted: false,
+            dims: {}
         }
 
     }
 
     async componentDidMount() {
+        await this.getDimensions();
         await this.checkNearby(this.props.screenProps.mainState.places);
         await this.setState({ isSorted: true })
     }
@@ -63,14 +66,42 @@ export default class SearchTab extends Component {
         await this.setState({ stops: nearbyStopList })
     }
 
+    componentWillReceiveProps() {
+        this.checkNearby(this.props.screenProps.mainState.places);
+    }
+
+    async getDimensions() {
+        let dims = await Dimensions.get('window');
+        await this.setState({ dims })
+    }
+
+    widthPercentage(num) {
+        let w = this.setState.dims.width / num;
+        return w
+    }
+
+    heightPercentage(num) {
+        let h = this.setState.dims.height / num;
+        return h
+    }
+
+    async showStopDetails(id) {
+        await this.props.stopDetails(id)
+        await this.props.navigation.navigate('Details')
+    }
+
+
     nearbyStops() {
         let mappedStopsNearby = this.state.stops.map((stop, index) => {
             let $distance;
             stop.distance.toFixed(1) == 0.0 ? $distance = 0 : $distance = stop.distance.toFixed(1)
             return (
-                <View key={index} style={{
-                    height: 250, width: 413, alignItems: 'center'
-                }}>
+                <View
+                    key={index}
+                    style={{
+                        height: 250, width: this.state.dims.width, alignItems: 'center'
+                    }}
+                >
 
                     <Image source={{ uri: `${stop.imgurl}` }}
                         style={{ flex: 6, width: '100%' }} />
@@ -83,7 +114,7 @@ export default class SearchTab extends Component {
                             alignItems: 'center', paddingLeft: 3
                         }}>
 
-                        
+
                             <Icon
                                 name="star"
                                 type='font-awesome'
@@ -91,7 +122,7 @@ export default class SearchTab extends Component {
                                 containerStyle={{ alignSelf: 'center' }}
                                 color='goldenrod'
                             />
-                        
+
 
                             <View>
                                 <Text style={{ color: 'goldenrod' }}>1004</Text>
@@ -99,7 +130,16 @@ export default class SearchTab extends Component {
 
                         </View>
 
-                        <Text style={{ alignSelf: 'center', fontSize: 26, color: 'black' }}>{stop.name}</Text>
+                        <Text
+                            style={{
+                                alignSelf: 'center',
+                                fontSize: 26,
+                                color: 'black'
+                            }}
+                            onPress={() => this.showStopDetails(this.props.stopId)}
+                        >
+                            {stop.name}
+                        </Text>
 
 
                         <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', paddingRight: 3 }}>
@@ -113,43 +153,45 @@ export default class SearchTab extends Component {
                 </View>
             )
         })
-        console.log(mappedStopsNearby)
+        // console.log(mappedStopsNearby)
         return mappedStopsNearby
 
     }
 
     render() {
-        console.log(this.state)
+        let cellWidth = this.state.dims.width;
+        let cellHeight = this.state.dims.height;
+        console.log(Dimensions.get('window'))
         let $browse;
         this.state.isSorted
             ?
             $browse =
 
-            <View style={{ flex: 1, flexDirection: 'column', width: '100%', alignItems: 'flex-end', justifyContent: 'flex-end', padding: 0 }}>
-<View style={{ flex: 0.225, alignSelf: 'center', alignItems: 'center', width: "100%", backgroundColor: 'white' }}>
-                <View style={{ alignSelf: 'center'}}>
-                    <View style={{ flexDirection: 'row', width: '90%', alignSelf: 'center', alignItems: 'center', justifyContent: 'center', borderColor: 'grey', borderWidth: 1, borderRadius: 20, paddingLeft: 10, marginTop: 3}}>
-                        <TextInput
-                            style={{ width: '90%' }}
-                            placeholder="   Search"
-                        />
-                        <TouchableOpacity>
-                        <Icon
-                            name="search"
-                            type='font-awesome'
-                            size={26}
-                            containerStyle={{ alignSelf: 'center' }}
-                            color='grey'
-                        />
-                        </TouchableOpacity>
+            <View style={{ height: cellHeight - 70, flexDirection: 'column', width: '100%', alignItems: 'flex-end', justifyContent: 'flex-end', padding: 0 }}>
+                <View style={{ height: 55, alignSelf: 'center', alignItems: 'center', width: "100%", backgroundColor: 'white' }}>
+                    <View style={{ alignSelf: 'center' }}>
+                        <View style={{ flexDirection: 'row', width: '90%', alignSelf: 'center', alignItems: 'center', justifyContent: 'center', borderColor: 'grey', borderWidth: 1, borderRadius: 20, paddingLeft: 10, marginTop: 5, marginBottom: 5 }}>
+                            <TextInput
+                                style={{ width: '90%', marginLeft: 10 }}
+                                placeholder="Search"
+                            />
+                            <TouchableOpacity>
+                                <Icon
+                                    name="search"
+                                    type='font-awesome'
+                                    size={26}
+                                    containerStyle={{ alignSelf: 'center', marginRight: 10 }}
+                                    color='grey'
+                                />
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    </View> 
-                    </View>
-                    <Text style={{fontSize: 26, alignSelf: 'center'}}>- Results -</Text>
+                </View>
+                <Text style={{ flex: 1, fontSize: 26, alignSelf: 'center' }}>- Results -</Text>
 
-               
 
-                <View style={{ flex: 1, flexDirection: 'row' }}>
+
+                <View style={{ flexDirection: 'row' }}>
                     <Text style={{ flex: 1, flexDirection: 'column', textAlignVertical: 'bottom', textAlign: 'center', fontSize: 26 }}>
                         - Nearby Stops -
                 </Text>
@@ -158,34 +200,14 @@ export default class SearchTab extends Component {
 
                 <ScrollView
                     style={{ flex: 1 }}
-                    automaticallyAdjustInsets={false}
                     horizontal={true}
                     pagingEnabled={true}
                     decelerationRate={0}
                     snapToAlignment='center'
-                    snapToInterval={414}
-                    scrollEventThrottle={8}
-                    onScroll={(event) => {
-                        var contentOffsetX = event.nativeEvent.contentOffset.x;
-                        var contentOffsetY = event.nativeEvent.contentOffset.y;
+                    snapToInterval={cellWidth}
 
-                        var cellWidth = (412).toFixed(2);
-                        var cellHeight = (222).toFixed(2);
-
-                        var cellIndex = Math.floor(contentOffsetX / cellWidth);
-
-                        // Round to the next cell if the scrolling will stop over halfway to the next cell.
-                        if ((contentOffsetX - (Math.floor(contentOffsetX / cellWidth) * cellWidth)) > cellWidth / 2) {
-                            cellIndex++;
-                        }
-                        contentOffsetX = cellIndex * cellWidth;
-                        contentOffsetY = cellIndex * cellHeight;
-
-                        event.nativeEvent.contentOffsetX = contentOffsetX;
-                        event.nativeEvent.contentOffsetY = contentOffsetY;
-                    }}
                 >
-                    <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between' }}>
                         {this.nearbyStops()}
                     </View>
                 </ScrollView>

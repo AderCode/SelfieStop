@@ -1,5 +1,14 @@
 # SelfieStop Mobile App
 
+## v0.1.8
+
+- Added button functionality to Details Tab
+- Fixed User Registration issue
+- Fixed miles on Nearby Stops not changing dynamically when user is moving
+- Adjusted some sizing on Add Stop Tab and Search Tab
+- Removed unused old screen files that were converted into current tabs
+- Removed remaining console logs
+
 ## v0.1.7
 
 - Full authentication on Splash Screen, Login Tab, Register Tab, & Add Stop Tab

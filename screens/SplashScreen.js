@@ -62,7 +62,7 @@ export default class LoginScreen extends Component {
            
         } catch (e) {
             alert(`Error fetching Token`);
-            console.log(e)
+            // console.log(e)
         }
     }
 
@@ -80,14 +80,14 @@ export default class LoginScreen extends Component {
                 },
                 method: 'GET',
             });
-            console.log(results)
+            // console.log(results)
             results.status !== 200 
             ?
             this.setState({ authChecked: true })
             :
             await this.handleNavigate('Main')
         } catch (e) {
-            console.log(`¯l_(ツ)_/¯`);
+            // console.log(`¯l_(ツ)_/¯`);
             this.setState({ authChecked: true })
         }      
         // console.log(results)                                                        // // // // // // // // // // // // // // // // // // // // // // // // // // // //

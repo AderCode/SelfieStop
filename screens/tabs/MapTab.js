@@ -33,7 +33,7 @@ export default class MapTab extends Component {
     }
 
     async fetchLogout() {
-        console.log('fetch activated')
+        // console.log('fetch activated')
         let token = await AsyncStorage.getItem("auth");
         let userid = await AsyncStorage.getItem("userId");
         let apiUrl = `https://powerful-savannah-66747.herokuapp.com/api/auth/logout/${userid}`
@@ -48,7 +48,7 @@ export default class MapTab extends Component {
                 },
                 method: 'DELETE',
             });
-            await console.log(results)
+            // await console.log(results)
             await results.status !== 200
                 ?
                 true
@@ -56,7 +56,7 @@ export default class MapTab extends Component {
                 await this.logout();
 
         } catch (e) {
-            console.log(e);
+            // console.log(e);
             return;
         }
     }
@@ -65,8 +65,8 @@ export default class MapTab extends Component {
         // PRODUCTION VALUES
         let tokVal = await AsyncStorage.getItem("auth")
         let usrVal = await AsyncStorage.getItem("userId")
-        await console.log(tokVal)
-        await console.log(usrVal)
+        // await console.log(tokVal)
+        // await console.log(usrVal)
 
         // let allKeys = await AsyncStorage.getAllKeys()
         // await console.log(allKeys)
@@ -78,7 +78,7 @@ export default class MapTab extends Component {
     }
 
     render() {
-        console.log(this.props)
+        // console.log(this.props)
         return (
             <View style={{ flex: 1 }}>
 

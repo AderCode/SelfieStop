@@ -43,7 +43,7 @@ export default class SubmissionScreen extends Component {
             })
         },
             err => {
-                console.log("geo err = ", err);
+                // console.log("geo err = ", err);
                 return
             }, { enableHighAccuracy: true });
 
@@ -67,16 +67,16 @@ export default class SubmissionScreen extends Component {
                 },
                 method: 'POST',
             });
-            console.log(results)
+            // console.log(results)
             this.reset()
         } catch (e) {
-            console.log("Upload Fetch Error = ", e)
+            // console.log("Upload Fetch Error = ", e)
         }
     }
 
     async uploadImg(uri) {
-        console.log('uploadImg')
-        console.log
+        // console.log('uploadImg')
+        // console.log
         let file = {
             uri,
             name: `${new Date().getTime()}.jpeg`,
@@ -96,27 +96,30 @@ export default class SubmissionScreen extends Component {
             .then(
                 res => {
                     if (res.status !== 201) {
-                        console.log('uploadImg error: ', res)
+                        // console.log('uploadImg error: ', res)
                         //   throw new Error("Failed to upload image to S3");
                     } else {
-                        console.log(res.body.postResponse.location);
+                        // console.log(res.body.postResponse.location);
                         this.setState({ imgUrl: `${res.body.postResponse.location}` })
                     }
                 })
             .then((res) =>
                 this.fetchImages()
             )
-            .catch(e => console.log(e))
+            .catch(e => {
+                // console.log(e)
+            }
+            )
 
     }
 
     async handleSubmit() {
-        console.log(this.state)
+        // console.log(this.state)
         let { source, userId, url, name, description, city, lat, lng } = this.state;
         if (source && name && description && lat && lng) {
             await this.uploadImg(this.state.uri)
         } else {
-            console.log("¯l_(ツ)_/¯ submission failure")
+            // console.log("¯l_(ツ)_/¯ submission failure")
             this.setState({ log: 'error' })
         }
     }
@@ -153,18 +156,18 @@ export default class SubmissionScreen extends Component {
 
     cam() {
         ImagePicker.launchCamera(options, (response) => {
-            console.log('Response = ', response);
+            // console.log('Response = ', response);
             this.setState({ loaded: 1 });
 
             if (response.didCancel) {
-                console.log('User cancelled image picker');
+                // console.log('User cancelled image picker');
 
             }
             else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
+                // console.log('ImagePicker Error: ', response.error);
             }
             else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
+                // console.log('User tapped custom button: ', response.customButton);
             }
             else {
                 // You can display the image using either data...
@@ -236,7 +239,7 @@ export default class SubmissionScreen extends Component {
                         {$imagePreview}
                     </View>
                     <View style={{ width: '100%', alignSelf: 'center', backgroundColor: 'white', marginTop: 10 }}>
-                    <Text style={{alignSelf: 'center'}}>*Preview represents how your image will be shown on the stop.</Text>
+                    <Text style={{alignSelf: 'center'}}>*Preview is how your image will be shown on the stop.</Text>
                         <View style={{ marginTop: 10 }}>
                             <TextInput
                                 placeholder="Location Name"
@@ -254,7 +257,7 @@ export default class SubmissionScreen extends Component {
                             />
                         </View>
 
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 40, marginBottom: 20 }} >
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 10, marginBottom: 20 }} >
                             <TouchableOpacity
                                 onPress={() => this.cam()}
                             >

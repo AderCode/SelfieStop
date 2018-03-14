@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {
     StyleSheet,
     View,
+    ScrollView,
     Text,
     TextInput,
     Image,
@@ -42,18 +43,14 @@ export default class RegisterTab extends Component {
     }
 
     async handleRegister() {
-        let data = {
-            username: this.state.username,
-            email: this.state.email,
-            password: this.state.password
-        }
+        
         this.state.passwordsMatch
             && this.state.password
             && this.state.passwordVerify
             && this.state.email
             && this.state.username
             ?
-            await this.fetchRegister(data)
+            await this.fetchRegister()
             :
             this.setState({ requiredErr: true })
     }
@@ -70,12 +67,17 @@ export default class RegisterTab extends Component {
         //Method to check that provided email is valid by having '@' and '.' in it.
     }
 
-    async fetchRegister(data) {
-        console.log('fetch activated')
+    async fetchRegister() {
+        let data = {
+            username: this.state.username,
+            email: this.state.email.toLowercase(),
+            password: this.state.password
+        }
+        // console.log('fetch activated')
         let apiUrl = 'https://powerful-savannah-66747.herokuapp.com/api/register'
         let ipUrl = 'https://fhtkncsjab.localtunnel.me/api/register'
         try {
-            let results = await fetch({ url: ipUrl }, {
+            let results = await fetch({ url: apiUrl }, {
                 body: JSON.stringify(data), // must match 'Content-Type' header
                 headers: {
                     'content-type': 'application/json'
@@ -109,8 +111,15 @@ export default class RegisterTab extends Component {
         errMsg = (x) => { return <Text style={{ color: 'red' }} >{x}</Text> }
         return (
             <View style={styles.root}>
-                <View style={styles.container}>
-                    <Image source={Logo} style={styles.logo} />
+                    <Image 
+                    source={Logo} 
+                    style={styles.logo}
+                    resizeMethod="resize"
+                    resizeMode="contain"
+                    
+                    />
+
+                <ScrollView style={styles.scroll}>
                     <Text style={styles.label}>Username: {this.state.requiredErr ? errMsg($nameErrMsg1) : false}</Text>
                     <TextInput
                         placeholder="Username"
@@ -157,20 +166,20 @@ export default class RegisterTab extends Component {
                                     </Text>
                         </TouchableOpacity>
                     </View>
+                </ScrollView>
 
-
-                </View>
             </View>
+
         )
     }
 }
 
 const styles = StyleSheet.create({
     root: {},
-    container: {},
+    scroll: {},
     logo: {
         height: '25%',
-        width: '25%',
+        width: '40%',
         alignSelf: 'center'
     },
     label: {

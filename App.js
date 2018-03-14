@@ -5,7 +5,6 @@ import LinearGradient from 'react-native-linear-gradient'
 
 //Screens
 import MainScreen from './screens/MainScreen'
-import UploadScreen from './screens/UploadScreen'
 import SplashScreen from './screens/SplashScreen'
 
 const RootNavigator = StackNavigator({

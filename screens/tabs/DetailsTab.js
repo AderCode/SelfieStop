@@ -3,18 +3,47 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Image
+    Image,
+    Linking
 } from 'react-native'
 import { Icon } from 'react-native-elements'
 import MapView, { Marker } from 'react-native-maps'
 
 export default class DetailsTab extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isStarred: false,
+            rating: 1004
+        }
+    }
 
+    handleStars() {
+        this.state.isStarred
+        ?
+        this.removeStar()
+        :
+        this.addStar()
+    }
 
+    addStar() {
+        this.state.rating += 1
+        this.setState({ isStarred: true });
+    }
 
+    removeStar() {
+        this.state.rating -= 1
+        this.setState({ isStarred: false });
+    }
+
+    reroll() {
+        this.props.screenProps.stopDetails(false)
+    }
 
     render() {
-        console.log('DetailsTab props: ', this.props.screenProps.mainState.stop.imgurl)
+        let $star;
+        this.state.isStarred ? $star = "star" : $star ="star-o"
+        // console.log('DetailsTab props: ', this.props.screenProps.mainState.stop.imgurl)
         return (
             <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center' }}>
                 <View style={{ flex: 1.2, backgroundColor: 'white', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
@@ -33,12 +62,15 @@ export default class DetailsTab extends Component {
                     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start' }}>
 
                         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start' }}>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => this.handleStars()}
+                                >
                                 <Icon
-                                    name="star-o"
+                                    name={$star}
                                     type='font-awesome'
                                     size={26}
                                     containerStyle={{ marginLeft: 20, marginTop: 10 }}
+                                    color="gold"
                                 />
                             </TouchableOpacity>
 
@@ -53,11 +85,13 @@ export default class DetailsTab extends Component {
                                     borderWidth: 1,
                                     paddingLeft: 4,
                                     paddingRight: 4
-                                }}><Text>1004</Text></View>
+                                }}><Text>{this.state.rating}</Text></View>
                         </View>
 
                         <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                            onPress={() => this.reroll()}
+                            >
                                 <Icon
                                     name="cycle"
                                     type='entypo'
@@ -66,7 +100,9 @@ export default class DetailsTab extends Component {
                                 />
                             </TouchableOpacity>
 
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                            onPress={()=> Linking.openURL(`http://maps.google.com/maps?daddr=${this.props.screenProps.mainState.stop.lat},${this.props.screenProps.mainState.stop.lng}`)}
+                            >
                                 <Icon
                                     name="direction"
                                     type='entypo'
