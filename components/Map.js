@@ -25,6 +25,7 @@ class Map extends Component {
                 {this.props.mainState.places.map((marker, index) => (
                     <MapMarker
                         key={index}
+                        showsMyLocationButton={true}
                         latitude={Number(marker.lat)}
                         longitude={Number(marker.lng)}
                         title={marker.name}

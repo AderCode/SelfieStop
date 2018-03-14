@@ -114,6 +114,7 @@ export default class LoginTab extends Component {
                     style={styles.input}
                     ref={(el) => { this.password = el; }}
                     onChangeText={(password) => this.setState({ password })}
+                    onSubmitEditing={() => this.handleLogin()}
                 />
 
 

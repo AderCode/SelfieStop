@@ -10,6 +10,8 @@ import {
 } from 'react-native'
 import { Icon } from 'react-native-elements'
 
+import Logo from '../../images/placeLogo.png'
+
 export default class SearchTab extends Component {
     constructor(props) {
         super(props);
@@ -18,7 +20,8 @@ export default class SearchTab extends Component {
             unit: 'M',
             stops: [],
             isSorted: false,
-            dims: {}
+            dims: {},
+            search: ''
         }
 
     }
@@ -26,6 +29,7 @@ export default class SearchTab extends Component {
     async componentDidMount() {
         await this.getDimensions();
         await this.checkNearby(this.props.screenProps.mainState.places);
+        await this.searchResults();
         await this.setState({ isSorted: true })
     }
 
@@ -86,7 +90,7 @@ export default class SearchTab extends Component {
     }
 
     async showStopDetails(id) {
-        await this.props.stopDetails(id)
+        await this.props.screenProps.stopDetails(id)
         await this.props.navigation.navigate('Details')
     }
 
@@ -102,19 +106,13 @@ export default class SearchTab extends Component {
                         height: 250, width: this.state.dims.width, alignItems: 'center'
                     }}
                 >
-
                     <Image source={{ uri: `${stop.imgurl}` }}
                         style={{ flex: 6, width: '100%' }} />
-
-
                     <View style={{ flex: 1, flexDirection: 'row', width: '100%', padding: 3 }}>
-
                         <View style={{
                             flex: 1, flexDirection: 'row', justifyContent: 'flex-start', width: '100%',
                             alignItems: 'center', paddingLeft: 3
                         }}>
-
-
                             <Icon
                                 name="star"
                                 type='font-awesome'
@@ -122,34 +120,24 @@ export default class SearchTab extends Component {
                                 containerStyle={{ alignSelf: 'center' }}
                                 color='goldenrod'
                             />
-
-
                             <View>
                                 <Text style={{ color: 'goldenrod' }}>1004</Text>
                             </View>
-
                         </View>
-
                         <Text
                             style={{
                                 alignSelf: 'center',
                                 fontSize: 26,
                                 color: 'black'
                             }}
-                            onPress={() => this.showStopDetails(this.props.stopId)}
+                            onPress={() => this.showStopDetails(stop.id)}
                         >
                             {stop.name}
                         </Text>
-
-
                         <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', paddingRight: 3 }}>
                             <Text>{$distance} mi</Text>
                         </View>
-
                     </View>
-
-
-
                 </View>
             )
         })
@@ -158,11 +146,94 @@ export default class SearchTab extends Component {
 
     }
 
+    searchResults() {
+        let keyword = this.state.search;
+        let results = this.state.stops.filter((stop, index) => {
+            return stop.name.toLowerCase().includes(keyword.toLowerCase())
+        })
+
+        this.setState({ results })
+    }
+
+    results() {
+        let results;
+        let mappedResults = this.state.results.map((stop, index) => {
+            let $distance;
+            stop.distance.toFixed(1) == 0.0 ? $distance = 0 : $distance = stop.distance.toFixed(1)
+            return (
+                <View
+                    key={index}
+                    style={{
+                        height: 250, width: this.state.dims.width, alignItems: 'center'
+                    }}
+                >
+                    <Image source={{ uri: `${stop.imgurl}` }}
+                        style={{ flex: 6, width: '100%' }} />
+                    <View style={{ flex: 1, borderBottomWidth: 1, borderColor: 'black' ,flexDirection: 'row', width: '100%', padding: 3 }}>
+                        <View style={{
+                            flex: 1, flexDirection: 'row', justifyContent: 'flex-start', width: '100%',
+                            alignItems: 'center', paddingLeft: 3
+                        }}>
+                            <Icon
+                                name="star"
+                                type='font-awesome'
+                                size={12}
+                                containerStyle={{ alignSelf: 'center' }}
+                                color='goldenrod'
+                            />
+                            <View>
+                                <Text style={{ color: 'goldenrod' }}>1004</Text>
+                            </View>
+                        </View>
+                        <Text
+                            style={{
+                                alignSelf: 'center',
+                                fontSize: 26,
+                                color: 'black'
+                            }}
+                            onPress={() => this.showStopDetails(stop.id)}
+                        >
+                            {stop.name}
+                        </Text>
+                        <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', paddingRight: 3 }}>
+                            <Text>{$distance} mi</Text>
+                        </View>
+                    </View>
+                </View>
+            )
+        })
+        return mappedResults
+    }
+
+
+
+
+
     render() {
+        // console.log(this.state.stops)
         let cellWidth = this.state.dims.width;
         let cellHeight = this.state.dims.height;
-        console.log(Dimensions.get('window'))
+        // console.log(Dimensions.get('window'))
         let $browse;
+        let $results;
+        this.state.search !== ''
+            ?
+            $results =
+            <ScrollView
+                style={{ flex: 1 }}
+                horizontal={true}
+                pagingEnabled={true}
+                decelerationRate={0}
+                snapToAlignment='center'
+                snapToInterval={cellWidth}
+
+            >
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+                    {this.results()}
+                </View>
+            </ScrollView>
+            :
+            $results = <Image source={Logo} style={{ height: '40%', width: '40%', alignSelf: 'center' }} />
         this.state.isSorted
             ?
             $browse =
@@ -174,7 +245,12 @@ export default class SearchTab extends Component {
                             <TextInput
                                 style={{ width: '90%', marginLeft: 10 }}
                                 placeholder="Search"
+                                ref={(el) => { this.search = el; }}
+                                onChangeText={async (search) => { await this.setState({ search }); await this.searchResults(search) }}
+                                value={this.state.search}
                             />
+
+
                             <TouchableOpacity>
                                 <Icon
                                     name="search"
@@ -187,10 +263,8 @@ export default class SearchTab extends Component {
                         </View>
                     </View>
                 </View>
-                <Text style={{ flex: 1, fontSize: 26, alignSelf: 'center' }}>- Results -</Text>
-
-
-
+                <Text style={{ flex: 0.135, fontSize: 26, alignSelf: 'center' }}>- Results -</Text>
+                {$results}
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ flex: 1, flexDirection: 'column', textAlignVertical: 'bottom', textAlign: 'center', fontSize: 26 }}>
                         - Nearby Stops -
@@ -214,6 +288,7 @@ export default class SearchTab extends Component {
             </View>
             :
             $browse = <Text>Loading...</Text>
+
         return (
             $browse
         )

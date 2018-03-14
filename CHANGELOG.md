@@ -1,5 +1,14 @@
 # SelfieStop Mobile App
 
+## v0.1.9
+
+- Added Search functionality on Search Tab
+- Added onSubmit functionality for LoginTab and RegisterTab
+- Added onPress to text on cards on Search Tab that go to StopDetails Tab
+- Fixed images in Marker Callouts only loading on the third tap/click
+- Fixed Custom markers not showing up on devices other than emulator.
+- Remade launcher icon
+
 ## v0.1.8
 
 - Added button functionality to Details Tab

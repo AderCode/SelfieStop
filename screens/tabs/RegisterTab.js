@@ -154,6 +154,8 @@ export default class RegisterTab extends Component {
                         ref={(el) => { this.passwordVerify = el; }}
                         onChangeText={async (passwordVerify) => { await this.setState({ passwordVerify }); await this.handleCheckPasswords() }}
                         value={this.state.passwordVerify}
+                        onSubmitEditing={() => this.handleRegister()}
+
                     />
 
 

@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { View, Text, Image, Linking } from 'react-native'
+import { View, Text, Image, WebView } from 'react-native'
 import { Marker, Callout } from 'react-native-maps'
 
 import User from '../images/user.gif'
 import StopPin from '../images/stop_pin.png'
+
+import TempImg from '../images/img.jpg'
 
 class MapMarker extends Component {
 
@@ -13,23 +15,29 @@ class MapMarker extends Component {
     }
 
     render() {
+        // console.log('props', this.props)
         let img = StopPin;
         this.props.ico == "user" ? img = User : false
         let $callout;
         if (this.props.img) {
-
-            $callout = <Callout
-                // onPress={()=> Linking.openURL(`http://maps.google.com/maps?daddr=${this.props.latitude},${this.props.longitude}`)}
-                onPress={() => this.showStopDetails(this.props.stopId)}
-            >
-                <View style={{ height: 120, width: 200 }}>
-                    <Image source={{ uri: `${this.props.img}` }} style={{ height: 100, width: 200 }} />
-                    <Text style={{ textAlign: 'center' }}>
-                        {this.props.title}
-                    </Text>
-                </View>
-            </Callout>
-            // console.log(this.props.img)
+            $callout =
+                <Callout
+                    onPress={() => this.showStopDetails(this.props.stopId)}
+                    tooltip={true}
+                >
+                    <View style={{ height: 120, width: 200 }}>
+                        <WebView
+                            source={{ html:
+                                 `<img src="${this.props.img}" width="183" height="90" />` 
+                                }}
+                            style={{ height: 100, width: 200, alignSelf: 'center' }}
+                            scrollEnabled={false}
+                        />
+                        <Text style={{ textAlign: 'center', backgroundColor: 'white' }}>
+                            {this.props.title}
+                        </Text>
+                    </View>
+                </Callout>
 
         }
         return (

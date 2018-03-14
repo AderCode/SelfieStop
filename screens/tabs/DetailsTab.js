@@ -9,12 +9,14 @@ import {
 import { Icon } from 'react-native-elements'
 import MapView, { Marker } from 'react-native-maps'
 
+import Flag from '../../images/stop_pin.png'
+
 export default class DetailsTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isStarred: false,
-            rating: 1004
+            rating: this.props.screenProps.mainState.stop.rating
         }
     }
 
@@ -132,7 +134,7 @@ export default class DetailsTab extends Component {
                                 latitude: this.props.screenProps.mainState.stop.lat,
                                 longitude: this.props.screenProps.mainState.stop.lng
                             }}
-                            // image={img}
+                            image={Flag}
                         />
                     </MapView>
 
