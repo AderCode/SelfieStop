@@ -70,7 +70,7 @@ export default class RegisterTab extends Component {
     async fetchRegister() {
         let data = {
             username: this.state.username,
-            email: this.state.email.toLowercase(),
+            email: this.state.email.toLowerCase(),
             password: this.state.password
         }
         // console.log('fetch activated')
