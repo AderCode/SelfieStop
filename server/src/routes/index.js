@@ -4,7 +4,6 @@ import usersRouter from './users';
 import { tokenMiddleware, isLoggedIn } from '../middleware/auth.mw';
 import StopsRouter from './stops';
 import UsersRouter from './users';
-import ImagesRouter from './images';
 import SearchRouter from './search';
 import RegisterRouter from './register';
 
@@ -24,6 +23,5 @@ router.route('*')
 router.use('/search', SearchRouter);
 router.use('/stops', StopsRouter);
 router.use('/users', UsersRouter);
-router.use('/images', ImagesRouter);
 
 export default router;
