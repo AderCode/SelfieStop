@@ -26,7 +26,7 @@ function executeQuery(sql, args = []) {
 
 function callProcedure(procedureName, args = []) {
     let placeholders = generatePlaceholders(args);
-    let callString = `CALL ${procedureName}(${placeholders});`; // CALL GetChirps();, or CALL InsertChirp(?,?,?);
+    let callString = `CALL ${procedureName}(${placeholders});`;
     return executeQuery(callString, args);
 }
 
@@ -51,26 +51,12 @@ function empty(procedureName, args = []) {
     });
 }
 
-// function generatePlaceholders(args = []) {
-//     let placeholders = '';
-//     if (args.length > 0) {
-//         for (let i = 0; i < args.length; i++) {
-//             console.log(args[i]);
-//             if (i === args.length - 1) { // if we are on the last argument in the array
-//                 placeholders += `'${args[i]}'`;
-//             } else {
-//                 placeholders += `'${args[i]}',`;
-//             }
-//         }
-//     }
-//     return placeholders;
-// }
 
 function generatePlaceholders(args = []) {
     let placeholders = '';
     if (args.length > 0) {
         for (let i = 0; i < args.length; i++) {
-            if (i === args.length - 1) { // if we are on the last argument in the array
+            if (i === args.length - 1) { 
                 placeholders += '?';
             } else {
                 placeholders += '?,';
@@ -88,7 +74,6 @@ function getConnection() {
                 reject(err);
             } else {
                 console.log('db.js getConnection resolve')
-                // console.log(connection);
                 resolve(connection);
             }
         });
