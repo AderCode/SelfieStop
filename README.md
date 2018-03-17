@@ -4,7 +4,9 @@ Have you ever wondered about where the coolest places to take photos in a new ci
 
 ## App Demo
 
-[SelfieStop.gif](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/SelfieStop.gif)
+[SelfieStop.gif (Imgur)](https://imgur.com/a/rLQGl)
+
+[SelfieStop.gif (Download)](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/SelfieStop.gif)
 
 ## Screen Images
 
