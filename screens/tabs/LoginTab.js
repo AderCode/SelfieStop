@@ -34,7 +34,7 @@ export default class LoginTab extends Component {
             password: this.state.password
         }
         let apiUrl = 'https://powerful-savannah-66747.herokuapp.com/api/auth/login'
-        let ipUrl = 'https://smjetissah.localtunnel.me/api/auth/login'
+        let ipUrl = 'https://odscowmqxp.localtunnel.me/api/auth/login'
         try {
 
             let results = await fetch({ url: apiUrl }, {

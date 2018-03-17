@@ -2,65 +2,41 @@
 
 Have you ever wondered about where the coolest places to take photos in a new city were? Whether it’s a famous wall mural, great city view, stunning nature sight or cool brunch spot, SelfieStop will tell you exactly where to go to get the perfect pic. SelfieStop provides a new way to explore the most beautiful parts of a city with the help of locals and fellow tourists letting you know about their favorite and most photogenic locations.
 
-Launcher Icon:
+## App Demo
 
-![alt text](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/1.png)
+[SelfieStop.gif](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/SelfieStop.gif)
 
-Login Screen:
+## Screen Images
 
-![alt text](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/2.png)
+[Launcher Icon](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/1.png)
 
-Register Screen:
+[Login Screen](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/2.png)
 
-![alt text](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/3.png)
+[Register Screen](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/3.png)
 
-Map Screen (User Marker):
+[Map Screen (User Marker)](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/4.png)
 
-![alt text](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/4.png)
+[Map Screen (Stop Marker)](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/5.png)
 
-Map Screen (Stop Marker):
+[User Callout](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/6.png)
 
-![alt text](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/5.png)
+[Stop Callout](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/7.png)
 
-User Callout:
+[Stop Details Screen](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/8.png)
 
-![alt text](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/6.png)
+[Stop Details Screen](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/9.png)
 
-Stop Callout:
+[Search Screen (Empty Search)](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/10.png)
 
-![alt text](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/7.png)
+[Search Screen (With populated search)](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/11.png)
 
-Stop Details Screen:
+[Add Stop Screen (Empty)](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/12.png)
 
-![alt text](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/8.png)
+[Add Stop Screen (With New Stop To Be Added)](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/13.png)
 
-Stop Details Screen (Starred):
+[Add Stop Screen (Stop Accepted)](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/14.png)
 
-![alt text](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/9.png)
-
-Search Screen (Empty Search):
-
-![alt text](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/10.png)
-
-Search Screen (With populated search):
-
-![alt text](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/11.png)
-
-Add Stop Screen (Empty):
-
-![alt text](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/12.png)
-
-Add Stop Screen (With New Stop To Be Added):
-
-![alt text](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/13.png)
-
-Add Stop Screen (Stop Accepted):
-
-![alt text](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/14.png)
-
-Map Screen (With Newly Added Stop):
-
-![alt text](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/15.png)
+[Map Screen (With Newly Added Stop)](https://raw.githubusercontent.com/AderCode/SelfieStop/dev-mobile-app/screenshots/15.png)
 
 ## Change Log
 
