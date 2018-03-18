@@ -17,19 +17,25 @@ class Map extends Component {
     // }
 
     render() {
-        console.log("props", this.props)
+        // console.log("props", this.props)
         return (
             <MapView style={this.props.style}
-                initialRegion={{
-                    latitude: 33.515713,
-                    longitude: 86.808878,
-                    latitudeDelta: 0.001,
-                    longitudeDelta: 0.001
-                }}
                 region={this.props.region}
-                showsPointsOfInterest={false}
-                animateToRegion={{region: this.props.newRegion, duration: 500}}
             >
+                {this.props.mainState.places.map((marker, index) => (
+                    <MapMarker
+                        key={index}
+                        showsMyLocationButton={true}
+                        latitude={Number(marker.lat)}
+                        longitude={Number(marker.lng)}
+                        title={marker.name}
+                        description={marker.description}
+                        img={marker.imgurl}
+                        navigation={this.props.navigation}
+                        stopId={marker.id}
+                        stopDetails={this.props.stopDetails}
+                    />
+                ))}
 
                 <MapMarker
                     latitude={this.props.region.latitude}
@@ -38,17 +44,6 @@ class Map extends Component {
                     description={"You are here."}
                     ico={'user'}
                 />
-
-                {this.props.places.map((marker, index) => (
-                    <MapMarker
-                        key={index}
-                        latitude={Number(marker.lat)}
-                        longitude={Number(marker.lng)}
-                        title={marker.stopname}
-                        description={marker.description}
-                        steve={marker.image}
-                    />
-                ))}
 
 
 

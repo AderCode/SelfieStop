@@ -3,15 +3,16 @@ import { View, StatusBar } from 'react-native'
 import { StackNavigator } from 'react-navigation'
 import LinearGradient from 'react-native-linear-gradient'
 
-import HomeScreen from './screens/HomeScreen'
-import UploadScreen from './screens/UploadScreen'
+//Screens
+import MainScreen from './screens/MainScreen'
+import SplashScreen from './screens/SplashScreen'
 
 const RootNavigator = StackNavigator({
-  Home: { screen: HomeScreen },
-  Upload: { screen: UploadScreen }
+  Splash: { screen: SplashScreen },
+  Main: { screen: MainScreen }
   },
   { headerMode: 'none' },
-  {initialRoute: 'Home'}
+  {initialRoute: 'Splash'}
   );
 
 export default class App extends Component {
@@ -20,7 +21,7 @@ export default class App extends Component {
       <View style={{flex: 1}}>
       <StatusBar 
             barStyle = "light-content"
-            backgroundColor="#0084FF"
+            backgroundColor="black"
             hidden = {false}/>
       <RootNavigator />
      </View>
